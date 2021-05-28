@@ -1,4 +1,6 @@
 import json
+import pandas as pd
+import numpy as np
 
 
 def retrieve_manifest(manifest_location):
@@ -37,18 +39,19 @@ def connect_db():
     return db
 
 
-def main():
-    check_manifest_updates()
-    db = connect_db()
+def retrieve_inventory_items_table(db):
     inventory_items = db.fetch("DestinyInventoryItemDefinition")
     inventory_items = [[entry[0], json.loads(entry[1])] for entry in inventory_items]
-    import pandas as pd
-    import numpy as np
+    return inventory_items
 
+
+def create_dataframe(inventory_items):
     inventory_df = pd.json_normalize([entry[1] for entry in inventory_items])
     inventory_df.index = [entry[0] for entry in inventory_items]
-    inventory_df = inventory_df[inventory_df['itemType'] == 3]
-    inventory_df = inventory_df[inventory_df['inventory.tierTypeName'] == 'Legendary']
+    return inventory_df
+
+
+def reduce_dataframe(inventory_df):
     inventory_df = inventory_df.explode('quality.versions')
     inventory_df = pd.concat([inventory_df.drop(['quality.versions'], axis=1),
                               inventory_df['quality.versions'].apply(pd.Series)], axis=1)
@@ -63,8 +66,21 @@ def main():
         except TypeError:
             pass
     inventory_df = inventory_df.dropna(axis='columns', how='all')
+    return inventory_df
+
+
+def create_csv(inventory_df):
     inventory_df['flavorText'] = inventory_df['flavorText'].replace(r'\n', ' ', regex=True)
     inventory_df.to_csv('manifest\\dataframe.csv', index=True)
+
+
+def main():
+    check_manifest_updates()
+    db = connect_db()
+    inventory_items = retrieve_inventory_items_table(db)
+    inventory_df = create_dataframe(inventory_items)
+    inventory_df = reduce_dataframe(inventory_df)
+    create_csv(inventory_df)
 
 
 if __name__ == '__main__':
