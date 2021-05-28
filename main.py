@@ -1,4 +1,6 @@
 import json
+import os
+
 import pandas as pd
 import numpy as np
 
@@ -87,7 +89,9 @@ def main():
         manifest_version.seek(0)
         manifest_version.write(location.split('/')[-1][18:-8])
         retrieve_manifest(location)
+    if not os.path.exists('manifest\\manifest.sqlite') or update_needed:
         extract_manifest()
+    if not os.path.exists('manifest\\dataframe.csv') or update_needed:
         db = connect_db()
         inventory_items = retrieve_inventory_items_table(db)
         inventory_df = create_dataframe(inventory_items)
