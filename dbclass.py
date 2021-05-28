@@ -6,5 +6,6 @@ class Database:
         self.conn = sqlite3.connect(db)
         self.cur = self.conn.cursor()
 
-    def __del__(self):
-        self.conn.close()
+    def fetch(self, table):
+        self.cur.execute("SELECT * FROM " + table)
+        return self.cur.fetchall()
