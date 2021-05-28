@@ -82,6 +82,10 @@ def create_csv(inventory_df):
     inventory_df.to_csv('manifest\\dataframe.csv', index=True)
 
 
+def create_from_csv():
+    return pd.read_csv('manifest\\dataframe.csv', index_col=0)
+
+
 def main():
     update_needed, location = check_manifest_updates()
     if update_needed:
@@ -97,6 +101,8 @@ def main():
         inventory_df = create_dataframe(inventory_items)
         inventory_df = reduce_dataframe(inventory_df)
         create_csv(inventory_df)
+    inventory_df = create_from_csv()
+
 
 
 if __name__ == '__main__':
