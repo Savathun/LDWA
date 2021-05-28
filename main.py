@@ -25,12 +25,8 @@ def check_manifest_updates():
     HEADERS = {"X-API-Key": api_key}
     r = requests.get("https://www.bungie.net/platform/Destiny2/Manifest/", headers=HEADERS)
     manifest_location = r.json()['Response']['mobileWorldContentPaths']['en']
-    if manifest_version.read() != manifest_location.split('/')[-1][18:-8]:
-        manifest_version.seek(0)
-        manifest_version.write(manifest_location.split('/')[-1][18:-8])
-        retrieve_manifest(manifest_location)
-        extract_manifest()
-    manifest_version.close()
+    return (True, manifest_location) if manifest_version.read() != manifest_location.split('/')[-1][18:-8] else (False,
+                                                                                                                 0)
 
 
 def connect_db():
@@ -52,20 +48,30 @@ def create_dataframe(inventory_items):
 
 
 def reduce_dataframe(inventory_df):
-    inventory_df = inventory_df.explode('quality.versions')
-    inventory_df = pd.concat([inventory_df.drop(['quality.versions'], axis=1),
-                              inventory_df['quality.versions'].apply(pd.Series)], axis=1)
-    inventory_df = inventory_df[inventory_df['powerCapHash'] == 2759499571]
-    inventory_df = inventory_df.drop_duplicates(subset=['displayProperties.name'])
-    inventory_df = inventory_df.drop(inventory_df.std()[(inventory_df.std() == 0)].index, axis=1)
-    for column in inventory_df.columns:
-        try:
-            inventory_df[column] = inventory_df[column].apply(lambda y: np.nan if len(y) == 0 else y)
-            if len(set(inventory_df[column])) == 1:
-                inventory_df = inventory_df.drop([column], axis=1)
-        except TypeError:
-            pass
-    inventory_df = inventory_df.dropna(axis='columns', how='all')
+    def reduce_rows(inventory_df):
+        inventory_df = inventory_df[inventory_df['itemType'] == 3]
+        inventory_df = inventory_df[inventory_df['inventory.tierTypeName'] == 'Legendary']
+        inventory_df = inventory_df.explode('quality.versions')
+        inventory_df = pd.concat([inventory_df.drop(['quality.versions'], axis=1),
+                                  inventory_df['quality.versions'].apply(pd.Series)], axis=1)
+        inventory_df = inventory_df[inventory_df['powerCapHash'] == 2759499571]
+        inventory_df = inventory_df.drop_duplicates(subset=['displayProperties.name'])
+        return inventory_df
+
+    def reduce_cols(inventory_df):
+        inventory_df = inventory_df.drop(inventory_df.std()[(inventory_df.std() == 0)].index, axis=1)
+        for column in inventory_df.columns:
+            try:
+                inventory_df[column] = inventory_df[column].apply(lambda y: np.nan if len(y) == 0 else y)
+                if len(set(inventory_df[column])) == 1:
+                    inventory_df = inventory_df.drop([column], axis=1)
+            except TypeError:
+                pass
+        inventory_df = inventory_df.dropna(axis='columns', how='all')
+        return inventory_df
+
+    inventory_df = reduce_rows(inventory_df)
+    inventory_df = reduce_cols(inventory_df)
     return inventory_df
 
 
@@ -75,12 +81,18 @@ def create_csv(inventory_df):
 
 
 def main():
-    check_manifest_updates()
-    db = connect_db()
-    inventory_items = retrieve_inventory_items_table(db)
-    inventory_df = create_dataframe(inventory_items)
-    inventory_df = reduce_dataframe(inventory_df)
-    create_csv(inventory_df)
+    update_needed, location = check_manifest_updates()
+    if update_needed:
+        manifest_version = open('manifest\\manifest_version.txt', "r+")
+        manifest_version.seek(0)
+        manifest_version.write(location.split('/')[-1][18:-8])
+        retrieve_manifest(location)
+        extract_manifest()
+        db = connect_db()
+        inventory_items = retrieve_inventory_items_table(db)
+        inventory_df = create_dataframe(inventory_items)
+        inventory_df = reduce_dataframe(inventory_df)
+        create_csv(inventory_df)
 
 
 if __name__ == '__main__':
