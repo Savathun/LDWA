@@ -88,7 +88,8 @@ def create_from_csv():
 
 def select_needed_columns(inventory_df):
     refined_df = inventory_df[
-        ['itemTypeDisplayName', 'displayProperties.name', 'defaultDamageType', 'equippingBlock.equipmentSlotTypeHash',
+        ['itemTypeDisplayName', 'displayProperties.name', 'defaultDamageTypeHash',
+         'equippingBlock.equipmentSlotTypeHash',
          'equippingBlock.ammoType', 'sockets.socketEntries']].copy()
     return refined_df
 
@@ -108,6 +109,17 @@ def refine_socket_entries(refined_df):
     refined_df = refined_df.drop(
         ['sockets.socketEntries'] + ['sockets.socketEntries.{}'.format(x) for x in range(0, 10)], axis=1)
     return refined_df
+
+
+def convert_hashes(refined_df, db):
+    archetype_df = pd.DataFrame()
+    damage_type_df = create_dataframe(retrieve_table(db, "DestinyDamageTypeDefinition"))
+    slot_df = create_dataframe(retrieve_table(db, "DestinyEquipmentSlotDefinition"))
+    ammo_type_list = ['None', 'Primary', 'Special', 'Heavy', 'Unknown']
+    perk_1_df = pd.DataFrame()
+    perk_2_df = pd.DataFrame()
+    perk_3_df = pd.DataFrame()
+    perk_4_df = pd.DataFrame()
 
 
 def main():
