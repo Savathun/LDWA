@@ -24,8 +24,8 @@ def check_manifest_updates():
         api_key = file.read()
     file.close()
     manifest_version = open('manifest\\manifest_version.txt', "r+")
-    HEADERS = {"X-API-Key": api_key}
-    r = requests.get("https://www.bungie.net/platform/Destiny2/Manifest/", headers=HEADERS)
+    headers = {"X-API-Key": api_key}
+    r = requests.get("https://www.bungie.net/platform/Destiny2/Manifest/", headers=headers)
     manifest_location = r.json()['Response']['mobileWorldContentPaths']['en']
     return (True, manifest_location) if manifest_version.read() != manifest_location.split('/')[-1][18:-8] else (False,
                                                                                                                  0)
@@ -86,6 +86,30 @@ def create_from_csv():
     return pd.read_csv('manifest\\dataframe.csv', index_col=0)
 
 
+def select_needed_columns(inventory_df):
+    refined_df = inventory_df[
+        ['itemTypeDisplayName', 'displayProperties.name', 'defaultDamageType', 'equippingBlock.equipmentSlotTypeHash',
+         'equippingBlock.ammoType', 'sockets.socketEntries']].copy()
+    return refined_df
+
+
+def refine_socket_entries(refined_df):
+    import ast
+    refined_df[['sockets.socketEntries.{}'.format(x) for x in
+                range(len(ast.literal_eval(refined_df.iloc[1]['sockets.socketEntries'])))]] = pd.DataFrame(
+        refined_df['sockets.socketEntries'].apply(lambda x: ast.literal_eval(x)).values.tolist(),
+        index=refined_df.index)
+    refined_df['sockets.socketEntries.0.singleInitialItemHash'] = pd.DataFrame(
+        refined_df['sockets.socketEntries.0'].apply(lambda x: x['singleInitialItemHash']), index=refined_df.index)
+    refined_df[['sockets.socketEntries.{}.randomizedPlugSetHash'.format(x) for x in range(1, 5)]] = pd.DataFrame(
+        refined_df[['sockets.socketEntries.{}'.format(x) for x in range(1, 5)]].apply(
+            lambda x: x.apply(lambda y: y['randomizedPlugSetHash'] if 'randomizedPlugSetHash' in y else np.nan)),
+        index=refined_df.index)
+    refined_df = refined_df.drop(
+        ['sockets.socketEntries'] + ['sockets.socketEntries.{}'.format(x) for x in range(0, 10)], axis=1)
+    return refined_df
+
+
 def main():
     update_needed, location = check_manifest_updates()
     if update_needed:
@@ -102,7 +126,9 @@ def main():
         inventory_df = reduce_dataframe(inventory_df)
         create_csv(inventory_df)
     inventory_df = create_from_csv()
-
+    refined_df = select_needed_columns(inventory_df)
+    refined_df = refine_socket_entries(refined_df)
+    refined_df.to_csv('manifest\\refined_dataframe.csv', index=True)
 
 
 if __name__ == '__main__':
