@@ -37,16 +37,16 @@ def connect_db():
     return db
 
 
-def retrieve_inventory_items_table(db):
-    inventory_items = db.fetch("DestinyInventoryItemDefinition")
-    inventory_items = [[entry[0], json.loads(entry[1])] for entry in inventory_items]
-    return inventory_items
+def retrieve_table(db, table_name):
+    table_list = db.fetch(table_name)
+    table_list = [[entry[0], json.loads(entry[1])] for entry in table_list]
+    return table_list
 
 
-def create_dataframe(inventory_items):
-    inventory_df = pd.json_normalize([entry[1] for entry in inventory_items])
-    inventory_df.index = [entry[0] for entry in inventory_items]
-    return inventory_df
+def create_dataframe(table_list):
+    table_df = pd.json_normalize([entry[1] for entry in table_list])
+    table_df.index = [entry[0] for entry in table_list]
+    return table_df
 
 
 def reduce_dataframe(inventory_df):
@@ -121,8 +121,7 @@ def main():
         extract_manifest()
     if not os.path.exists('manifest\\dataframe.csv') or update_needed:
         db = connect_db()
-        inventory_items = retrieve_inventory_items_table(db)
-        inventory_df = create_dataframe(inventory_items)
+        inventory_df = create_dataframe(retrieve_table(db, "DestinyInventoryItemDefinition"))
         inventory_df = reduce_dataframe(inventory_df)
         create_csv(inventory_df)
     inventory_df = create_from_csv()
