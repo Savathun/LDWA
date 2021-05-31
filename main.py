@@ -1,8 +1,6 @@
 import json
 import os
-
 import pandas as pd
-import numpy as np
 
 
 def retrieve_manifest(manifest_location):
@@ -31,12 +29,6 @@ def check_manifest_updates():
                                                                                                                  0)
 
 
-def connect_db():
-    import dbclass
-    db = dbclass.Database('manifest\\manifest.sqlite')
-    return db
-
-
 def retrieve_table(db, table_name):
     table_list = db.fetch(table_name)
     table_list = [[entry[0], json.loads(entry[1])] for entry in table_list]
@@ -50,40 +42,14 @@ def create_dataframe(table_list):
 
 
 def reduce_dataframe(inventory_df):
-    def reduce_rows(inventory_df):
-        inventory_df = inventory_df[inventory_df['itemType'] == 3]
-        inventory_df = inventory_df[inventory_df['inventory.tierTypeName'] == 'Legendary']
-        inventory_df = inventory_df.explode('quality.versions')
-        inventory_df = pd.concat([inventory_df.drop(['quality.versions'], axis=1),
-                                  inventory_df['quality.versions'].apply(pd.Series)], axis=1)
-        inventory_df = inventory_df[inventory_df['powerCapHash'] == 2759499571]
-        inventory_df = inventory_df.drop_duplicates(subset=['displayProperties.name'])
-        return inventory_df
-
-    def reduce_cols(inventory_df):
-        inventory_df = inventory_df.drop(inventory_df.std()[(inventory_df.std() == 0)].index, axis=1)
-        for column in inventory_df.columns:
-            try:
-                inventory_df[column] = inventory_df[column].apply(lambda y: np.nan if len(y) == 0 else y)
-                if len(set(inventory_df[column])) == 1:
-                    inventory_df = inventory_df.drop([column], axis=1)
-            except TypeError:
-                pass
-        inventory_df = inventory_df.dropna(axis='columns', how='all')
-        return inventory_df
-
-    inventory_df = reduce_rows(inventory_df)
-    inventory_df = reduce_cols(inventory_df)
+    inventory_df = inventory_df[inventory_df['itemType'] == 3]
+    inventory_df = inventory_df[inventory_df['inventory.tierTypeName'] == 'Legendary']
+    inventory_df = inventory_df.explode('quality.versions')
+    inventory_df = pd.concat([inventory_df.drop(['quality.versions'], axis=1),
+                              inventory_df['quality.versions'].apply(pd.Series)], axis=1)
+    inventory_df = inventory_df[inventory_df['powerCapHash'] == 2759499571]
+    inventory_df = inventory_df.drop_duplicates(subset=['displayProperties.name'])
     return inventory_df
-
-
-def create_csv(inventory_df):
-    inventory_df['flavorText'] = inventory_df['flavorText'].replace(r'\n', ' ', regex=True)
-    inventory_df.to_csv('manifest\\dataframe.csv', index=True)
-
-
-def create_from_csv():
-    return pd.read_csv('manifest\\dataframe.csv', index_col=0)
 
 
 def select_needed_columns(inventory_df):
@@ -148,15 +114,34 @@ def main():
         retrieve_manifest(location)
     if not os.path.exists('manifest\\manifest.sqlite') or update_needed:
         extract_manifest()
-    if not os.path.exists('manifest\\dataframe.csv') or update_needed:
-        db = connect_db()
+    if not os.path.exists('manifest\\weapons_dataframe.csv') or update_needed:
+        import dbclass
+        db = dbclass.Database('manifest\\manifest.sqlite')
         inventory_df = create_dataframe(retrieve_table(db, "DestinyInventoryItemDefinition"))
-        inventory_df = reduce_dataframe(inventory_df)
-        create_csv(inventory_df)
-    inventory_df = create_from_csv()
-    refined_df = select_needed_columns(inventory_df)
-    refined_df = refine_socket_entries(refined_df)
-    refined_df.to_csv('manifest\\refined_dataframe.csv', index=True)
+        perk_df = \
+            inventory_df[
+                inventory_df['itemCategoryHashes'].apply(lambda x: 610365472 in x if type(x) is list else False)][
+                ['hash', 'displayProperties.name']]
+        perk_df.to_csv('manifest\\perk_dataframe.csv', index=True)
+        damage_type_df = create_dataframe(retrieve_table(db, "DestinyDamageTypeDefinition"))[
+            ['hash', 'displayProperties.name']]
+        damage_type_df.to_csv('manifest\\damage_type_dataframe.csv', index=True)
+        slot_df = create_dataframe(retrieve_table(db, "DestinyEquipmentSlotDefinition"))[
+            ['hash', 'displayProperties.name']]
+        slot_df.to_csv('manifest\\slot_dataframe.csv', index=True)
+        plug_sets_df = create_dataframe(retrieve_table(db, "DestinyPlugSetDefinition"))[['hash', 'reusablePlugItems']]
+        plug_sets_df.to_csv('manifest\\plug_sets_dataframe.csv', index=True)
+        weapons_df = reduce_dataframe(inventory_df)
+        weapons_df = select_needed_columns(weapons_df)
+        weapons_df = refine_socket_entries(weapons_df)
+        weapons_df = convert_hashes(weapons_df, perk_df, plug_sets_df, damage_type_df, slot_df)
+        weapons_df.to_csv('manifest\\weapons_dataframe.csv', index=True)
+
+    # weapons_df = pd.read_csv('manifest\\weapons_dataframe.csv', index_col=0)
+    # perk_df = pd.read_csv('manifest\\perk_dataframe.csv', index_col=0)
+    # plug_sets_df = pd.read_csv('manifest\\plug_sets_dataframe.csv', index_col=0)
+    # slot_df = pd.read_csv('manifest\\slot_dataframe.csv', index_col=0)
+    # damage_type_df = pd.read_csv('manifest\\damage_type_dataframe.csv', index_col=0)
 
 
 if __name__ == '__main__':
