@@ -95,31 +95,48 @@ def select_needed_columns(inventory_df):
 
 
 def refine_socket_entries(refined_df):
-    import ast
     refined_df[['sockets.socketEntries.{}'.format(x) for x in
-                range(len(ast.literal_eval(refined_df.iloc[1]['sockets.socketEntries'])))]] = pd.DataFrame(
-        refined_df['sockets.socketEntries'].apply(lambda x: ast.literal_eval(x)).values.tolist(),
+                range(len(refined_df.iloc[1]['sockets.socketEntries']))]] = pd.DataFrame(
+        refined_df['sockets.socketEntries'].values.tolist(),
         index=refined_df.index)
     refined_df['sockets.socketEntries.0.singleInitialItemHash'] = pd.DataFrame(
         refined_df['sockets.socketEntries.0'].apply(lambda x: x['singleInitialItemHash']), index=refined_df.index)
     refined_df[['sockets.socketEntries.{}.randomizedPlugSetHash'.format(x) for x in range(1, 5)]] = pd.DataFrame(
         refined_df[['sockets.socketEntries.{}'.format(x) for x in range(1, 5)]].apply(
-            lambda x: x.apply(lambda y: y['randomizedPlugSetHash'] if 'randomizedPlugSetHash' in y else np.nan)),
+            lambda x: x.apply(lambda y: y['randomizedPlugSetHash'] if 'randomizedPlugSetHash' in y else 0)),
         index=refined_df.index)
     refined_df = refined_df.drop(
         ['sockets.socketEntries'] + ['sockets.socketEntries.{}'.format(x) for x in range(0, 10)], axis=1)
     return refined_df
 
 
-def convert_hashes(refined_df, db):
-    archetype_df = pd.DataFrame()
-    damage_type_df = create_dataframe(retrieve_table(db, "DestinyDamageTypeDefinition"))
-    slot_df = create_dataframe(retrieve_table(db, "DestinyEquipmentSlotDefinition"))
+def convert_hashes(weapons_df, perk_df, plug_sets_df, damage_type_df, slot_df):
+    weapons_df['defaultDamageTypeHash'] = pd.DataFrame(
+        weapons_df['defaultDamageTypeHash'].apply(
+            lambda x: damage_type_df.loc[damage_type_df['hash'] == x]['displayProperties.name'].values[0]),
+        index=weapons_df.index)
+    weapons_df['equippingBlock.equipmentSlotTypeHash'] = pd.DataFrame(
+        weapons_df['equippingBlock.equipmentSlotTypeHash'].apply(
+            lambda x: slot_df.loc[slot_df['hash'] == x]['displayProperties.name'].values[0].split(' ')[0]),
+        index=weapons_df.index)
     ammo_type_list = ['None', 'Primary', 'Special', 'Heavy', 'Unknown']
-    perk_1_df = pd.DataFrame()
-    perk_2_df = pd.DataFrame()
-    perk_3_df = pd.DataFrame()
-    perk_4_df = pd.DataFrame()
+    weapons_df['equippingBlock.ammoType'] = pd.DataFrame(
+        weapons_df['equippingBlock.ammoType'].apply(lambda x: ammo_type_list[int(x)]), index=weapons_df.index)
+    weapons_df['sockets.socketEntries.0.singleInitialItemHash'] = pd.DataFrame(
+        weapons_df['sockets.socketEntries.0.singleInitialItemHash'].apply(
+            lambda x: perk_df.loc[perk_df['hash'] == x]['displayProperties.name'].values[0]),
+        index=weapons_df.index)
+    weapons_df[
+        ['sockets.socketEntries.{}.randomizedPlugSetHash'.format(x) for x in range(1, 5)]] = pd.DataFrame(
+        weapons_df[
+            ['sockets.socketEntries.{}.randomizedPlugSetHash'.format(x) for x in range(1, 5)]].apply(
+            lambda x: x.apply(
+                lambda y: [
+                    perk_df.loc[perk_df['hash'] == z['plugItemHash']]['displayProperties.name'].values[0] for z
+                    in plug_sets_df.loc[plug_sets_df['hash'] == y]['reusablePlugItems'].values[0] if
+                    z['currentlyCanRoll']] if y != 0 else ['Static'])),
+        index=weapons_df.index)
+    return weapons_df
 
 
 def main():
