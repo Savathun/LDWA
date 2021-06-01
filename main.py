@@ -80,26 +80,25 @@ def refine_socket_entries(refined_df):
 def convert_hashes(weapons_df, perk_df, plug_sets_df, damage_type_df, slot_df):
     weapons_df['defaultDamageTypeHash'] = pd.DataFrame(
         weapons_df['defaultDamageTypeHash'].apply(
-            lambda x: damage_type_df.loc[damage_type_df['hash'] == x]['displayProperties.name'].values[0]),
+            lambda x: damage_type_df.loc[damage_type_df['hash'] == x]['displayProperties_name'].values[0]),
         index=weapons_df.index)
-    weapons_df['equippingBlock.equipmentSlotTypeHash'] = pd.DataFrame(
-        weapons_df['equippingBlock.equipmentSlotTypeHash'].apply(
-            lambda x: slot_df.loc[slot_df['hash'] == x]['displayProperties.name'].values[0].split(' ')[0]),
+    weapons_df['equippingBlock_equipmentSlotTypeHash'] = DataFrame(
+        weapons_df['equippingBlock_equipmentSlotTypeHash'].apply(
+            lambda x: slot_df.loc[slot_df['hash'] == x]['displayProperties_name'].values[0].split(' ')[0]),
         index=weapons_df.index)
-    ammo_type_list = ['None', 'Primary', 'Special', 'Heavy', 'Unknown']
-    weapons_df['equippingBlock.ammoType'] = pd.DataFrame(
-        weapons_df['equippingBlock.ammoType'].apply(lambda x: ammo_type_list[int(x)]), index=weapons_df.index)
-    weapons_df['sockets.socketEntries.0.singleInitialItemHash'] = pd.DataFrame(
-        weapons_df['sockets.socketEntries.0.singleInitialItemHash'].apply(
-            lambda x: perk_df.loc[perk_df['hash'] == x]['displayProperties.name'].values[0]),
+    weapons_df['equippingBlock_ammoType'] = DataFrame(
+        weapons_df['equippingBlock_ammoType'].apply(
+            lambda x: ammo_type_list[int(x)]),
         index=weapons_df.index)
-    weapons_df[
-        ['sockets.socketEntries.{}.randomizedPlugSetHash'.format(x) for x in range(1, 5)]] = pd.DataFrame(
-        weapons_df[
-            ['sockets.socketEntries.{}.randomizedPlugSetHash'.format(x) for x in range(1, 5)]].apply(
+    weapons_df['sockets_socketEntries_0_singleInitialItemHash'] = DataFrame(
+        weapons_df['sockets_socketEntries_0_singleInitialItemHash'].apply(
+            lambda x: perk_df.loc[perk_df['hash'] == x]['displayProperties_name'].values[0]),
+        index=weapons_df.index)
+    weapons_df[['sockets_socketEntries_{}_randomizedPlugSetHash'.format(x) for x in range(1, 5)]] = DataFrame(
+        weapons_df[['sockets_socketEntries_{}_randomizedPlugSetHash'.format(x) for x in range(1, 5)]].apply(
             lambda x: x.apply(
                 lambda y: [
-                    perk_df.loc[perk_df['hash'] == z['plugItemHash']]['displayProperties.name'].values[0] for z
+                    perk_df.loc[perk_df['hash'] == z['plugItemHash']]['displayProperties_name'].values[0] for z
                     in plug_sets_df.loc[plug_sets_df['hash'] == y]['reusablePlugItems'].values[0] if
                     z['currentlyCanRoll']] if y != 0 else ['Static'])),
         index=weapons_df.index)
@@ -113,7 +112,8 @@ def main():
         manifest_version.seek(0)
         manifest_version.write(location.split('/')[-1][18:-8])
         retrieve_manifest(location)
-    if not os.path.exists('manifest\\manifest.sqlite') or update_needed:
+    from os.path import exists
+    if not exists('manifest\\manifest.sqlite') or update_needed:
         extract_manifest()
     if not os.path.exists('manifest\\weapons_dataframe.csv') or update_needed:
         import dbclass
