@@ -1,6 +1,12 @@
-import json
-import os
-import pandas as pd
+class Database:
+    def __init__(self, db):
+        from sqlite3 import connect
+        self.conn = connect(db)
+        self.cur = self.conn.cursor()
+
+    def fetch(self, table):
+        self.cur.execute("SELECT * FROM " + table)
+        return self.cur.fetchall()
 
 
 def retrieve_manifest(manifest_location):
