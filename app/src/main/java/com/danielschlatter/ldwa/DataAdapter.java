@@ -17,26 +17,23 @@ public class DataAdapter {
 
     protected static final String TAG = "DataAdapter";
 
-    private final Context mContext;
     private SQLiteDatabase mDb;
-    private DataBaseHelper mDbHelper;
+    private final DataBaseHelper mDbHelper;
 
     public DataAdapter(Context context) {
-        this.mContext = context;
-        mDbHelper = new DataBaseHelper(mContext);
+        mDbHelper = new DataBaseHelper(context);
     }
 
-    public DataAdapter createDatabase() throws SQLException {
+    public void createDatabase() throws SQLException {
         try {
             mDbHelper.createDataBase();
         } catch (IOException mIOException) {
             Log.e(TAG, mIOException.toString() + "  UnableToCreateDatabase");
             throw new Error("UnableToCreateDatabase");
         }
-        return this;
     }
 
-    public DataAdapter open() throws SQLException {
+    public void open() throws SQLException {
         try {
             mDbHelper.openDataBase();
             mDbHelper.close();
@@ -45,7 +42,6 @@ public class DataAdapter {
             Log.e(TAG, "open >>"+ mSQLException.toString());
             throw mSQLException;
         }
-        return this;
     }
 
     public void close() {
@@ -68,9 +64,9 @@ public class DataAdapter {
 
     private static class DataBaseHelper extends SQLiteOpenHelper {
 
-        private static String TAG = "DataBaseHelper"; // Tag just for the LogCat window
-        private static String DB_NAME ="weapons_database.sqlite"; // Database name
-        private static int DB_VERSION = 1; // Database version
+        private static final String TAG = "DataBaseHelper"; // Tag just for the LogCat window
+        private static final String DB_NAME ="weapons_database.sqlite"; // Database name
+        private static final int DB_VERSION = 1; // Database version
         private final File DB_FILE;
         private SQLiteDatabase mDataBase;
         private final Context mContext;
@@ -115,11 +111,10 @@ public class DataAdapter {
         }
 
         // Open the database, so we can query it
-        public boolean openDataBase() throws SQLException {
+        public void openDataBase() throws SQLException {
             // Log.v("DB_PATH", DB_FILE.getAbsolutePath());
             // mDataBase = SQLiteDatabase.openDatabase(DB_FILE, SQLiteDatabase.CREATE_IF_NECESSARY);
             mDataBase = SQLiteDatabase.openDatabase(String.valueOf(DB_FILE), null, SQLiteDatabase.NO_LOCALIZED_COLLATORS);
-            return mDataBase != null;
         }
 
         @Override
