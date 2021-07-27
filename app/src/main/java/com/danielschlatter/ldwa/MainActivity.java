@@ -1,6 +1,7 @@
 package com.danielschlatter.ldwa;
 
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,8 +16,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Weapon> weaponList;
-    private RecyclerView recyclerView;
-    private WeaponAdapter weaponAdapter;
     private DataAdapter dataAdapter;
 
     @Override
@@ -24,14 +23,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
         weaponList = new ArrayList<>();
         dataAdapter = new DataAdapter(this);
         dataAdapter.createDatabase();
         dataAdapter.open();
-        recyclerView = findViewById(R.id.recyclerView);
-        weaponAdapter = new WeaponAdapter(this, weaponList);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        WeaponAdapter weaponAdapter = new WeaponAdapter(this, weaponList);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 weaponList.add(weapon);
             }
         }
-        weaponAdapter.notifyDataSetChanged();
+
 
 
     }
