@@ -1,10 +1,8 @@
 package com.example.ldwa;
 
 public class Weapon {
-    //Fields for Contact class
     private int id;
-    private String name;
-    private String type, archetype, icon, element, slot, ammo, ammo_icon, synergy, perk_column_1,
+    private String name, type, archetype, icon, element, slot, ammo, ammo_icon, synergy, perk_column_1,
             perk_column_2, perk_column_3, perk_column_4, screenshot, element_icon;
 
     public String getType() {

@@ -16,8 +16,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Weapon> weaponList;
     private RecyclerView recyclerView;
-    private edu.cudenver.salimlakhani.addressbookv2.WeaponAdapter weaponAdapter;
-    private edu.cudenver.salimlakhani.addressbookv2.DataAdapter dataAdapter;
+    private WeaponAdapter weaponAdapter;
+    private DataAdapter dataAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +27,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         weaponList = new ArrayList<Weapon>();
-        dataAdapter = new edu.cudenver.salimlakhani.addressbookv2.DataAdapter(this);
+        dataAdapter = new DataAdapter(this);
         dataAdapter.createDatabase();
         dataAdapter.open();
         recyclerView = findViewById(R.id.recyclerView);
-        weaponAdapter = new edu.cudenver.salimlakhani.addressbookv2.WeaponAdapter(this, weaponList);
+        weaponAdapter = new WeaponAdapter(this, weaponList);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showWeapon (int weaponToShow) {
-        edu.cudenver.salimlakhani.addressbookv2.ViewWeaponDialog viewWeaponDialog = new edu.cudenver.salimlakhani.addressbookv2.ViewWeaponDialog();
+        ViewWeaponDialog viewWeaponDialog = new ViewWeaponDialog();
         viewWeaponDialog.sendSelectedWeapon(weaponList.get(weaponToShow));
         viewWeaponDialog.show(getSupportFragmentManager(), "");
     }
