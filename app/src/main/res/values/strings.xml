@@ -1,9 +1,20 @@
 <resources>
-    <string name="app_name">Destiny Weapon Analytics</string>
+    <string name="app_name">LDWA</string>
     <string name="title">Destiny Weapon Analytics</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_setting">Settings</string>
     <string name="title_activity_settings">Settings</string>
     <string name="close_button_text">Close</string>
+    <string name="default_name">Frozen Orbit</string>
+    <string name="default_type">Sniper Rifle</string>
+    <string name="default_archetype">Aggressive Frame</string>
+    <string name="default_element">Void</string>
+    <string name="default_ammo">Special</string>
+    <string name="default_slot">Energy</string>
+    <string name="default_synergy">(\'Outlaw\', \'Multikill Clip\'), (\'Ambitious Assassin\', \'Kill Clip\'), (\'Killing Wind\', \'Thresh\'), (\'Killing Wind\', \'Wellspring\'), (\'Surplus\', \'Multikill Clip\'), (\'Surplus\', \'Kill Clip\'), (\'Killing Wind\', \'Demolitionist\'), (\'Outlaw\', \'Kill Clip\'), (\'Ambitious Assassin\', \'Multikill Clip\')</string>
+    <string name="default_pc1">\'Arrowhead Brake\', \'Chambered Compensator\', \'Corkscrew Rifling\', \'Extended Barrel\', \'Fluted Barrel\', \'Full Bore\', \'Hammer-Forged Rifling\', \'Polygonal Rifling\', \'Smallbore\'</string>
+    <string name="default_pc2">\'Accurized Rounds\', \'Appended Mag\', \'Tactical Mag\', \'Extended Mag\', \'Steady Rounds\', \'Alloy Magazine\', \'Flared Magwell\'</string>
+    <string name="default_pc3">\'Surplus\', \'Outlaw\', \'Clown Cartridge\', \'Genesis\', \'Killing Wind\', \'No Distractions\', \'Auto-Loading Holster\', \'Lead from Gold\', \'Triple Tap\', \'Moving Target\', \'Ambitious Assassin\', \'Firmly Planted\'</string>
+    <string name="default_pc4">\'Wellspring\', \'Thresh\', \'Demolitionist\', \'Multikill Clip\', \'Kill Clip\', \'High-Impact Reserves\', \'Vorpal Weapon\', \'Box Breathing\', \'Dragonfly\', \'Opening Shot\', \'Snapshot Sights\', \'Quickdraw\'</string>
 
 </resources>
