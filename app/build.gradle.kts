@@ -8,7 +8,7 @@ android {
     buildToolsVersion = "30.0.3"
 
     defaultConfig {
-        applicationId = "com.example.ldwa"
+        applicationId = "com.danielschlatter.ldwa"
         minSdk = 30
         targetSdk = 30
         versionCode = 1

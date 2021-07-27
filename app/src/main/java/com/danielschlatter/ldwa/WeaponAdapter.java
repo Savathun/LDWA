@@ -1,4 +1,4 @@
-package com.example.ldwa;
+package com.danielschlatter.ldwa;
 
 import android.view.LayoutInflater;
 import android.view.View;

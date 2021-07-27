@@ -1,4 +1,4 @@
-package com.example.ldwa.ui.theme
+package com.danielschlatter.ldwa.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package com.example.ldwa;
+package com.danielschlatter.ldwa;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import java.util.Objects;
 
 public class ViewWeaponDialog extends DialogFragment {
     private Weapon weapon;
@@ -45,18 +47,18 @@ public class ViewWeaponDialog extends DialogFragment {
         typeTextView.setText(weapon.getType());
         archetypeTextView.setText(weapon.getArchetype());
 
-        icon.setImageResource(this.getContext().getResources().getIdentifier(weapon.getIcon(), "mipmap", this.getContext().getPackageName()));
+        icon.setImageResource(this.requireContext().getResources().getIdentifier(weapon.getIcon(), "mipmap", this.requireContext().getPackageName()));
         elementTextView.setText(weapon.getElement());
         slotTextView.setText(weapon.getSlot());
         ammoTextView.setText(weapon.getAmmo());
-        ammo_icon.setImageResource(this.getContext().getResources().getIdentifier(weapon.getAmmo_icon(), "mipmap", this.getContext().getPackageName()));
+        ammo_icon.setImageResource(this.requireContext().getResources().getIdentifier(weapon.getAmmo_icon(), "mipmap", this.requireContext().getPackageName()));
         synergyTextView.setText(weapon.getSynergy());
         perk_column_1TextView.setText(weapon.getPerk_column_1());
         perk_column_2TextView.setText(weapon.getPerk_column_2());
         perk_column_3TextView.setText(weapon.getPerk_column_3());
         perk_column_4TextView.setText(weapon.getPerk_column_4());
-        screenshot.setImageResource(this.getContext().getResources().getIdentifier(weapon.getScreenshot(), "drawable", this.getContext().getPackageName()));
-        element_icon.setImageResource(this.getContext().getResources().getIdentifier(weapon.getElement_icon(), "mipmap", this.getContext().getPackageName()));
+        screenshot.setImageResource(this.requireContext().getResources().getIdentifier(weapon.getScreenshot(), "drawable", this.requireContext().getPackageName()));
+        element_icon.setImageResource(this.requireContext().getResources().getIdentifier(weapon.getElement_icon(), "mipmap", this.requireContext().getPackageName()));
         builder.setView(dialogView).setMessage(" ");
         buttonClose.setOnClickListener(view -> dismiss());
         return builder.create();

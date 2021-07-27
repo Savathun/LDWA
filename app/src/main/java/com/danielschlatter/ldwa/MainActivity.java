@@ -1,4 +1,4 @@
-package com.example.ldwa;
+package com.danielschlatter.ldwa;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        weaponList = new ArrayList<Weapon>();
+        weaponList = new ArrayList<>();
         dataAdapter = new DataAdapter(this);
         dataAdapter.createDatabase();
         dataAdapter.open();

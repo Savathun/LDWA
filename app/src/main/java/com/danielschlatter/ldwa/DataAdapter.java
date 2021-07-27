@@ -1,4 +1,4 @@
-package com.example.ldwa;
+package com.danielschlatter.ldwa;
 
 import android.content.Context;
 import android.database.Cursor;

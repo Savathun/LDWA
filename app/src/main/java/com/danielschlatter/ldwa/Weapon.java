@@ -1,4 +1,4 @@
-package com.example.ldwa;
+package com.danielschlatter.ldwa;
 
 public class Weapon {
     private int id;
