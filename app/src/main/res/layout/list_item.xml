@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageViewIcon"
+        android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="10sp"
-        android:paddingRight="5sp" />
+        android:paddingStart="10sp"
+        android:paddingEnd="5sp"
+        app:srcCompat="@mipmap/icons_9bca64e4672251a90f580b1881461550" />
+
     <TextView
         android:id="@+id/textViewName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="@string/default_name"
         android:textColor="@android:color/background_light"
-        android:textSize="24sp" />
+        android:textSize="20sp" />
+    <ImageView
+        android:id="@+id/element"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        app:srcCompat="@mipmap/icons_destinydamagetypedefinition_ceb2f6197dccf3958bb31cc783eb97a0" />
+    <ImageView
+        android:id="@+id/ammo"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        app:srcCompat="@mipmap/icons_b6d3805ca8400272b7ee7935b0b75c79" />
 
 </LinearLayout>

@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class WeaponAdapter extends RecyclerView.Adapter<WeaponAdapter.ListItemHolder> {
-    private MainActivity mainActivity;
-    private ArrayList<Weapon> weaponList;
+    private final MainActivity mainActivity;
+    private final ArrayList<Weapon> weaponList;
 
     public WeaponAdapter (MainActivity mainActivity, ArrayList<Weapon> weaponList) {
         this.mainActivity = mainActivity;
@@ -35,7 +35,8 @@ public class WeaponAdapter extends RecyclerView.Adapter<WeaponAdapter.ListItemHo
         Weapon weapon = weaponList.get(position);
         holder.textViewName.setText(weapon.getName());
         holder.icon.setImageResource(mainActivity.getResources().getIdentifier(weapon.getIcon(), "mipmap", mainActivity.getPackageName()));
-
+        holder.element.setImageResource(mainActivity.getResources().getIdentifier(weapon.getElement(), "mipmap", mainActivity.getPackageName()));
+        holder.ammo.setImageResource(mainActivity.getResources().getIdentifier(weapon.getAmmo(), "mipmap", mainActivity.getPackageName()));
     }
 
     @Override
@@ -46,9 +47,13 @@ public class WeaponAdapter extends RecyclerView.Adapter<WeaponAdapter.ListItemHo
     public class ListItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView textViewName;
         private final ImageView icon;
+        private final ImageView element;
+        private final ImageView ammo;
         public ListItemHolder (View view) {
             super(view);
-            icon = view.findViewById(R.id.imageViewIcon);
+            element = view.findViewById(R.id.element);
+            ammo = view.findViewById(R.id.ammo);
+            icon = view.findViewById(R.id.icon);
             textViewName = view.findViewById(R.id.textViewName);
             view.setClickable(true);
             view.setOnClickListener(this);
