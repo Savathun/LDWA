@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#000000"
@@ -10,137 +11,123 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/textViewElement"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_margin="4dp"-->
+        <!--            android:padding="4dp"-->
+        <!--            android:text="@string/default_element"-->
+        <!--            android:textColor="@android:color/background_light"-->
+        <!--            android:textSize="18sp" />-->
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/textViewAmmo"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_margin="4dp"-->
+        <!--            android:padding="4dp"-->
+        <!--            android:text="@string/default_ammo"-->
+        <!--            android:textColor="@android:color/background_light"-->
+        <!--            android:textSize="18sp" />-->
+
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/imageViewElement_icon"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:srcCompat="@mipmap/icons_destinydamagetypedefinition_ceb2f6197dccf3958bb31cc783eb97a0" />-->
+
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/imageViewAmmo_icon"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:srcCompat="@mipmap/icons_b6d3805ca8400272b7ee7935b0b75c79" />-->
+
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/textViewSlot"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_margin="4dp"-->
+        <!--            android:padding="4dp"-->
+        <!--            android:text="@string/default_slot"-->
+        <!--            android:textColor="@android:color/background_light"-->
+        <!--            android:textSize="18sp" />-->
+
+
         <ImageView
             android:id="@+id/imageViewScreenshot"
+            android:layout_width="wrap_content"
+            android:layout_height="171dp"
+            app:srcCompat="@drawable/screenshots_3473290087" />
+
+        <TextView
+            android:id="@+id/textViewSynergy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+            android:text="@string/default_synergy"
+            android:textColor="@android:color/background_light"
+            android:textSize="18sp" />
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100sp" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@android:color/white" />
+            <TextView
+                android:id="@+id/textViewPerk_column_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:breakStrategy="high_quality"
+                android:ellipsize="none"
+                android:padding="4dp"
+                android:text="@string/default_pc1"
+                android:textColor="@android:color/background_light"
+                android:textSize="13sp" />
 
+            <TextView
+                android:id="@+id/textViewPerk_column_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:text="@string/default_pc2"
+                android:textColor="@android:color/background_light"
+                android:textSize="13sp" />
 
+            <TextView
+                android:id="@+id/textViewPerk_column_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:text="@string/default_pc3"
+                android:textColor="@android:color/background_light"
+                android:textSize="13sp" />
 
-
-                <TextView
-                    android:id="@+id/textViewType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:padding="4dp"
-                    android:textColor="@android:color/background_light"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/textViewArchetype"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:textColor="@android:color/background_light"
-                    android:padding="4dp"
-                    android:textSize="18sp" />
-
-
-                <TextView
-                    android:id="@+id/textViewElement"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:textColor="@android:color/background_light"
-                    android:padding="4dp"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/textViewAmmo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:textColor="@android:color/background_light"
-                    android:padding="4dp"
-                    android:textSize="18sp" />
+            <TextView
+                android:id="@+id/textViewPerk_column_4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
 
 
-
-                <ImageView
-                    android:id="@+id/imageViewElement_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-
-                <ImageView
-                    android:id="@+id/imageViewAmmo_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-
-
-                <TextView
-                    android:id="@+id/textViewSlot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:textColor="@android:color/background_light"
-                    android:padding="4dp"
-                    android:textSize="18sp" />
-
-
-                <ImageView
-                    android:id="@+id/imageViewIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/textViewSynergy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:textColor="@android:color/background_light"
-                    android:padding="4dp"
-                    android:textSize="18sp" />
-
-
-                <TextView
-                    android:id="@+id/textViewPerk_column_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:textColor="@android:color/background_light"
-                    android:padding="4dp"
-                    android:textSize="18sp" />
-
-
-
-                <TextView
-                    android:id="@+id/textViewPerk_column_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:textColor="@android:color/background_light"
-                    android:padding="4dp"
-                    android:textSize="18sp" />
-
-
-                <TextView
-                    android:id="@+id/textViewPerk_column_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:textColor="@android:color/background_light"
-                    android:padding="4dp"
-                    android:textSize="18sp" />
-
-
-
-                <TextView
-                    android:id="@+id/textViewPerk_column_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:textColor="@android:color/background_light"
-                    android:padding="4dp"
-                    android:textSize="18sp" />
+                android:padding="4dp"
+                android:text="@string/default_pc4"
+                android:textColor="@android:color/background_light"
+                android:textSize="13sp" />
+        </LinearLayout>
 
 
         <Button
@@ -154,7 +141,6 @@
             android:text="@string/close_button_text"
             android:textColor="@android:color/background_light"
             android:textSize="18sp" />
-
 
 
     </LinearLayout>
