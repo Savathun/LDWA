@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">LDWA</string>
+    <string name="app_name">Destiny Weapon Analytics</string>
+    <string name="title">Destiny Weapon Analytics</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_setting">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="close_button_text">Close</string>
+
 </resources>
