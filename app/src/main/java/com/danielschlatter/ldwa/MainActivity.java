@@ -1,8 +1,10 @@
 package com.danielschlatter.ldwa;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
@@ -78,9 +81,8 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = dataAdapter.selectAll();
         int weaponCount = cursor.getCount();
 
-        if (weaponCount > 0) {
+        if (weaponCount != weaponList.size()) {
             weaponList.clear();
-
             while (cursor.moveToNext()) {
                 int id = cursor.getInt(cursor.getColumnIndex("index"));
                 String name = cursor.getString(cursor.getColumnIndex("Name"));

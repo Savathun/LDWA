@@ -1,0 +1,31 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#000000">
+
+    <PreferenceCategory app:title="Configuration and Data">
+
+        <EditTextPreference
+            app:key="signature"
+            app:title="Import Configuration from File"
+            />
+
+        <EditTextPreference
+            app:key="reply"
+            app:title="Export Configuration to File"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/sync_header">
+
+        <ListPreference
+            app:defaultValue="On startup"
+            app:entries="@array/sync_entries"
+            app:entryValues="@array/sync_entries"
+            app:key="sync_frequency"
+            app:title="Database Sync Frequency"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

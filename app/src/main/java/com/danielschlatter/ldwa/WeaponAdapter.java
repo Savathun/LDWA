@@ -35,8 +35,8 @@ public class WeaponAdapter extends RecyclerView.Adapter<WeaponAdapter.ListItemHo
         Weapon weapon = weaponList.get(position);
         holder.textViewName.setText(weapon.getName());
         holder.icon.setImageResource(mainActivity.getResources().getIdentifier(weapon.getIcon(), "mipmap", mainActivity.getPackageName()));
-        holder.element.setImageResource(mainActivity.getResources().getIdentifier(weapon.getElement(), "mipmap", mainActivity.getPackageName()));
-        holder.ammo.setImageResource(mainActivity.getResources().getIdentifier(weapon.getAmmo(), "mipmap", mainActivity.getPackageName()));
+        holder.element.setImageResource(mainActivity.getResources().getIdentifier(weapon.getElement_icon(), "mipmap", mainActivity.getPackageName()));
+        holder.ammo.setImageResource(mainActivity.getResources().getIdentifier(weapon.getAmmo_icon(), "mipmap", mainActivity.getPackageName()));
     }
 
     @Override

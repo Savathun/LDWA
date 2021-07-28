@@ -1,0 +1,11 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="sync_entries">
+        <item>On startup</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Never</item>
+    </string-array>
+
+</resources>
