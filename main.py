@@ -307,19 +307,22 @@ def main():
             {'on_kill_with_melee', 'regen_melee_energy', 'on_melee_hit', 'increase_melee_damage'},
         ]
 
-        weapons_df['Synergy'] = weapons_df.apply(
-            lambda row: {(perk_1, perk_2)
-                         for combo in synergistic_combos
-                         for cat in combo
-                         for perk_1 in row.perk_column_3 if perk_1 in categories[cat]
-                         for perk_2 in row.perk_column_4
-                         for cat_2 in ([x for x in list(combo) if x != cat] if len(combo) > 1
-                                       else [cat]) if perk_2 in categories[cat_2]}
-            if row.perk_column_3 != ['Static'] else 'Static', axis=1)
-        weapons_df = weapons_df.drop(['perk_column_1', 'perk_column_2', 'perk_column_3', 'perk_column_4'], axis=1)
-
-        weapons_df.to_csv('weapons_dataframe.csv', index=True)
-
-
-if __name__ == '__main__':
-    main()
+    weapons_df['Synergy'] = weapons_df.apply(
+        lambda row: {(perk_1, perk_2)
+                     for combo in synergistic_combos
+                     for cat in combo
+                     for perk_1 in row.perk_column_3 if perk_1 in categories[cat]
+                     for perk_2 in row.perk_column_4
+                     for cat_2 in ([x for x in list(combo) if x != cat] if len(combo) > 1
+                                   else [cat]) if perk_2 in categories[cat_2]}
+        if row.perk_column_3 != ['Static'] else ['Static'], axis=1)
+    weapons_df[['perk_column_{}'.format(x + 1) for x in range(4)] + ['Synergy']] = pandas.DataFrame(
+        weapons_df[['perk_column_{}'.format(x + 1) for x in range(4)] + ['Synergy']].apply(
+            lambda x: x.apply(lambda y: str(str(y).strip('[]{}')))), index=weapons_df.index)
+    import sqlalchemy
+    engine = sqlalchemy.create_engine('sqlite:///weapons_database.db', echo=False)
+    weapons_df.to_sql('weapons', con=engine, if_exists="replace")
+    pandas.read_pickle('dataframes/perk_dataframe.pkl').to_sql('perks', con=engine, if_exists="replace")
+    pandas.DataFrame.from_dict({'locale':['en-US']}).to_sql('android_metadata', con=engine, if_exists="replace")
+# if __name__ == '__main__':
+#     main()
