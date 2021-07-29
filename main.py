@@ -43,7 +43,7 @@ def generate_pickle(db, name, columns):
     table_df[columns].to_pickle('dataframes/{}_dataframe.pkl'.format(name))
 
 
-def generate_weapons_dataframe(inventory_df, perk_df, plug_sets_df, damage_type_df, slot_df):
+def generate_weapons_dataframe(inventory_df, perk_df, plug_sets_df, damage_type_df, slot_df, presentation_node_df):
     def reduce_inventory_to_weapons(inventory_df):
         def refine_socket_entries(inventory_df):
             inventory_df[['sockets_socketEntries_{}'.format(x) for x in
@@ -67,13 +67,18 @@ def generate_weapons_dataframe(inventory_df, perk_df, plug_sets_df, damage_type_
                                       inventory_df['quality_versions'].apply(pandas.Series)], axis=1)
         return refine_socket_entries(
             inventory_df[inventory_df['powerCapHash'] == 2759499571].drop_duplicates(subset=['displayProperties_name'])[
-                ['itemTypeDisplayName', 'displayProperties_name', 'defaultDamageTypeHash',
+                ['itemTypeDisplayName', 'displayProperties_name', 'displayProperties_icon', 'screenshot',
+                 'defaultDamageTypeHash',
                  'equippingBlock_equipmentSlotTypeHash', 'equippingBlock_ammoType', 'sockets_socketEntries']])
 
     ammo_type_list = [item['identifier'] for item in
                       requests.get("https://github.com/Bungie-net/api/raw/master/openapi.json").json()[
                           'components']['schemas']['Destiny.DestinyAmmunitionType']['x-enum-values']]
     weapons_df = reduce_inventory_to_weapons(inventory_df)
+    weapons_df['defaultDamageTypeHashIcon'] = pandas.DataFrame(
+        weapons_df['defaultDamageTypeHash'].apply(
+            lambda x: damage_type_df.loc[damage_type_df['hash'] == x]['displayProperties_icon'].values[0]),
+        index=weapons_df.index)
     weapons_df['defaultDamageTypeHash'] = pandas.DataFrame(
         weapons_df['defaultDamageTypeHash'].apply(
             lambda x: damage_type_df.loc[damage_type_df['hash'] == x]['displayProperties_name'].values[0]),
@@ -82,6 +87,13 @@ def generate_weapons_dataframe(inventory_df, perk_df, plug_sets_df, damage_type_
     weapons_df['equippingBlock_equipmentSlotTypeHash'] = pandas.DataFrame(
         weapons_df['equippingBlock_equipmentSlotTypeHash'].apply(
             lambda x: slot_df.loc[slot_df['hash'] == x]['displayProperties_name'].values[0].split(' ')[0]),
+        index=weapons_df.index)
+    weapons_df['equippingBlock_ammoTypeIcon'] = pandas.DataFrame(
+        weapons_df['equippingBlock_ammoType'].apply(
+            lambda x:
+            presentation_node_df.loc[presentation_node_df['displayProperties_name'] == ammo_type_list[int(x)]][
+                'displayProperties_icon'].values[0],
+            lambda x: ammo_type_list[int(x)]),
         index=weapons_df.index)
     weapons_df['equippingBlock_ammoType'] = pandas.DataFrame(
         weapons_df['equippingBlock_ammoType'].apply(
@@ -99,91 +111,101 @@ def generate_weapons_dataframe(inventory_df, perk_df, plug_sets_df, damage_type_
                     in plug_sets_df.loc[plug_sets_df['hash'] == y]['reusablePlugItems'].values[0] if
                     z['currentlyCanRoll']] if y != 0 else ['Static'])),
         index=weapons_df.index)
-    return weapons_df
+    weapons_df.columns = ['Type', 'Name', 'Icon', 'Screenshot', 'Element', 'Slot', 'Ammo', 'Archetype',
+                          'perk_column_1', 'perk_column_2', 'perk_column_3', 'perk_column_4', 'ElementIcon', 'AmmoIcon']
+    return weapons_df[['Name', 'Type', 'Archetype', 'Icon', 'Screenshot', 'Slot', 'Element', 'ElementIcon', 'Ammo',
+                       'AmmoIcon', 'perk_column_1', 'perk_column_2', 'perk_column_3', 'perk_column_4']]
 
 
-def main():
-    update_needed, location = check_manifest_updates()
-    if update_needed:
-        open('manifest\\manifest_version.txt', "r+").write(location.split('/')[-1][18:-8])
-        retrieve_manifest(location)
+def generate_set_of_available_traits(weapons_df):
+    import numpy
+    return sorted(set(numpy.append(weapons_df['perk_column_4'].explode().unique(),
+                                   weapons_df['perk_column_3'].explode().unique())))
 
-    if not os.path.exists('manifest\\manifest.sqlite') or update_needed:
-        extract_manifest()
-    db = None
-    for name, columns in zip(['InventoryItem', 'DamageType', 'EquipmentSlot', 'PlugSet'],
-                             [['hash', 'itemCategoryHashes', 'itemTypeDisplayName', 'displayProperties_name',
-                               'itemType', 'equippingBlock_equipmentSlotTypeHash', 'inventory_tierTypeName',
-                               'quality_versions', 'equippingBlock_ammoType', 'sockets_socketEntries',
-                               'defaultDamageTypeHash'], ['hash', 'displayProperties_name'],
-                              ['hash', 'displayProperties_name'], ['hash', 'reusablePlugItems']]):
-        if not os.path.exists('dataframes/{}_dataframe.pkl'.format(name)) or update_needed:
-            db = Database('dataframes/manifest.sqlite') if not None else db
-            generate_pickle(db, name, columns)
+
+
+
+# def main():
+update_needed, location = check_manifest_updates()
+if update_needed:
+    open('manifest\\manifest_version.txt', "r+").write(location.split('/')[-1][18:-8])
+    retrieve_manifest(location)
+if not os.path.exists('manifest\\manifest.sqlite') or update_needed:
+    extract_manifest()
+
+db = Database('manifest\\manifest.sqlite')
+for name, columns in zip(['InventoryItem', 'DamageType', 'EquipmentSlot', 'PlugSet', 'PresentationNode'],
+                         [['hash', 'itemCategoryHashes', 'itemTypeDisplayName', 'displayProperties_name',
+                           'displayProperties_icon', 'screenshot',
+                           'quality_versions', 'equippingBlock_equipmentSlotTypeHash', 'inventory_tierTypeName',
+                           'itemType', 'equippingBlock_ammoType', 'sockets_socketEntries', 'defaultDamageTypeHash'],
+                          ['hash', 'displayProperties_name', 'displayProperties_icon'],
+                          ['hash', 'displayProperties_name'],
+                          ['hash', 'reusablePlugItems'],
+                          ['hash', 'displayProperties_name', 'displayProperties_icon']]):
+    if not os.path.exists('dataframes/{}_dataframe.pkl'.format(name)) or update_needed:
+        generate_pickle(db, name, columns)
+if not os.path.exists('dataframes/weapons_dataframe.pkl') or update_needed:
+    inventory_df = pandas.read_pickle('dataframes/InventoryItem_dataframe.pkl')
+    if not os.path.exists('dataframes/perk_dataframe.pkl') or update_needed:
+        inventory_df[
+            inventory_df['itemCategoryHashes'].apply(lambda x: 610365472 in x if type(x) is list else False)][
+            ['hash', 'displayProperties_name', 'displayProperties_icon']].to_pickle('dataframes\\perk_dataframe.pkl')
     if not os.path.exists('dataframes/weapons_dataframe.pkl') or update_needed:
-        inventory_df = pandas.read_pickle('dataframes/InventoryItem_dataframe.pkl')
-        if not os.path.exists('dataframes/perk_dataframe.pkl') or update_needed:
-            inventory_df[
-                inventory_df['itemCategoryHashes'].apply(lambda x: 610365472 in x if type(x) is list else False)][
-                ['hash', 'displayProperties_name']].to_pickle('manifest\\perk_dataframe.pkl')
-        if not os.path.exists('dataframes/weapons_dataframe.pkl') or update_needed:
-            generate_weapons_dataframe(inventory_df,
-                                       pandas.read_pickle('dataframes/perk_dataframe.pkl'),
-                                       pandas.read_pickle('dataframes/PlugSet_dataframe.pkl'),
-                                       pandas.read_pickle('dataframes/DamageType_dataframe.pkl'),
-                                       pandas.read_pickle('dataframes/EquipmentSlot_dataframe.pkl')
-                                       ).to_pickle('dataframes/weapons_dataframe.pkl')
-    if not os.path.exists('weapons_dataframe.csv') or update_needed:
-        weapons_df = pandas.read_pickle('dataframes/weapons_dataframe.pkl')
-        weapons_df.columns = ['Type', 'Name', 'Element', 'Slot', 'Ammo', 'Archetype',
-                              'perk_column_1', 'perk_column_2', 'perk_column_3', 'perk_column_4']
-        # import numpy
-        # weapon_traits = sorted(set(
-        #     numpy.append(weapons_df['perk_column_4'].explode().unique(),
-        #                  weapons_df['perk_column_3'].explode().unique())))
-        categories = {
-            'increase_weapon_damage': ['Swashbuckler', 'Adrenaline Junkie', "Assassin's Blade", 'Counterattack',
-                                       'One for All',
-                                       'Cluster Bomb', 'Surrounded', 'High-Impact Reserves', 'Frenzy', 'Rampage',
-                                       'Reservoir Burst',
-                                       'Whirlwind Blade', 'Trench Barrel', 'Timed Payload', 'Multikill Clip',
-                                       'Recombination',
-                                       'En Garde', 'Explosive Payload', 'Explosive Head', 'Full Court',
-                                       'Shattering Blade', 'Kill Clip', 'Lasting Impression', 'Kickstart', ],
-            'increase_weapon_damage_against_powerful_red_and_orange_bar': ['Redirection'],
-            'increase_weapon_damage_against_yellow_bar': ['Vorpal Weapon', 'Redirection', ],
-            'increase_weapon_precision_damage': ['Box Breathing', 'Firing Line', 'Headseeker', ],
-            'increase_melee_damage': ['One-Two Punch', ],
-            'increase_handling': ['Elemental Capacitor', 'Celerity', 'Eye of the Storm', 'Backup Plan', 'Surplus',
-                                  'Killing Wind', 'Threat Detector', 'Frenzy',
-                                  'Firmly Planted', 'Slideways', 'Pulse Monitor', 'Quickdraw'],
-            'increase_accuracy': ['Dynamic Sway Reduction', 'Eye of the Storm', 'Opening Shot', 'Under Pressure',
-                                  'Hip-Fire Grip', 'Heating Up', 'Firmly Planted', 'Tap the Trigger', ],
-            'increase_stability': ['Dynamic Sway Reduction', 'Elemental Capacitor', 'Under Pressure', 'Surplus',
-                                   'Hip-Fire Grip', 'Heating Up', 'Rapid Hit', 'Threat Detector',
-                                   'Iron Grip', 'Firmly Planted', 'Slideshot', 'Slideways', 'Tap the Trigger', ],
-            'increase_range': ['Slideshot', 'Opening Shot', 'Iron Reach', 'Killing Wind', 'Box Breathing', ],
-            'increase_rpm': ['Desperado', ],
-            'increase_mag_size': ['Ambitious Assassin', 'Bottomless Grief', 'Clown Cartridge', 'Overflow',
-                                  'Reconstruction', ],
-            'increase_reload_speed': ['Celerity', 'Dual Loader', 'Elemental Capacitor', 'Feeding Frenzy',
-                                      'Surplus', 'Threat Detector', 'Firefly', 'Frenzy', 'Outlaw',
-                                      'Rapid Hit', 'Sneak Bow', 'Impulse Amplifier',
-                                      # 'Underdog',
-                                      ],
-            'increase_reserves': ['Field Prep', ],
-            'increase_stow_speed': ['Field Prep', ],
-            'increase_draw_speed': ['Field Prep', 'Quickdraw'],
-            'increase_mobility': ['Killing Wind', ],
-            'increase_speed': ["Assassin's Blade", ],
-            'increase_precision_hit_targeting_while_hip_firing': ['Hip-Fire Grip'],
-            'increase_movement_while_ads_speed': ['Elemental Capacitor', 'Moving Target', ],
-            'increase_zoom': ['Rangefinder', ],
-            'increase_velocity': ['Rangefinder', 'Impulse Amplifier', ],
-            'increase_blast_radius': ['Danger Zone', ],
-            'increase_ads_speed': ['Tunnel Vision', 'Snapshot Sights'],
-            'increase_target_acquisition': ['Iron Gaze', 'Moving Target', 'Celerity', 'Tunnel Vision', ],
-            'increase_bow_hold_time': ['Sneak Bow'],
+        generate_weapons_dataframe(inventory_df,
+                                   pandas.read_pickle('dataframes/perk_dataframe.pkl'),
+                                   pandas.read_pickle('dataframes/PlugSet_dataframe.pkl'),
+                                   pandas.read_pickle('dataframes/DamageType_dataframe.pkl'),
+                                   pandas.read_pickle('dataframes/EquipmentSlot_dataframe.pkl'),
+                                   pandas.read_pickle('dataframes/PresentationNode_dataframe.pkl')
+                                   ).to_pickle('dataframes/weapons_dataframe.pkl')
+
+if not os.path.exists('weapons_database.sqlite') or update_needed:
+    weapons_df = pandas.read_pickle('dataframes/weapons_dataframe.pkl')
+    create_image_archive(pandas.read_pickle('dataframes/weapons_dataframe.pkl'), pandas.read_pickle('dataframes/perk_dataframe.pkl'))
+    categories = {
+        'increase_weapon_damage': ['Swashbuckler', 'Adrenaline Junkie', "Assassin's Blade", 'Counterattack',
+                                   'One for All',
+                                   'Cluster Bomb', 'Surrounded', 'High-Impact Reserves', 'Frenzy', 'Rampage',
+                                   'Reservoir Burst',
+                                   'Whirlwind Blade', 'Trench Barrel', 'Timed Payload', 'Multikill Clip',
+                                   'Recombination',
+                                   'En Garde', 'Explosive Payload', 'Explosive Head', 'Full Court',
+                                   'Shattering Blade', 'Kill Clip', 'Lasting Impression', 'Kickstart', ],
+        'increase_weapon_damage_against_powerful_red_and_orange_bar': ['Redirection'],
+        'increase_weapon_damage_against_yellow_bar': ['Vorpal Weapon', 'Redirection', ],
+        'increase_weapon_precision_damage': ['Box Breathing', 'Firing Line', 'Headseeker', ],
+        'increase_melee_damage': ['One-Two Punch', ],
+        'increase_handling': ['Elemental Capacitor', 'Celerity', 'Eye of the Storm', 'Backup Plan', 'Surplus',
+                              'Killing Wind', 'Threat Detector', 'Frenzy',
+                              'Firmly Planted', 'Slideways', 'Pulse Monitor', 'Quickdraw'],
+        'increase_accuracy': ['Dynamic Sway Reduction', 'Eye of the Storm', 'Opening Shot', 'Under Pressure',
+                              'Hip-Fire Grip', 'Heating Up', 'Firmly Planted', 'Tap the Trigger', ],
+        'increase_stability': ['Dynamic Sway Reduction', 'Elemental Capacitor', 'Under Pressure', 'Surplus',
+                               'Hip-Fire Grip', 'Heating Up', 'Rapid Hit', 'Threat Detector',
+                               'Iron Grip', 'Firmly Planted', 'Slideshot', 'Slideways', 'Tap the Trigger', ],
+        'increase_range': ['Slideshot', 'Opening Shot', 'Iron Reach', 'Killing Wind', 'Box Breathing', ],
+        'increase_rpm': ['Desperado', ],
+        'increase_mag_size': ['Ambitious Assassin', 'Bottomless Grief', 'Clown Cartridge', 'Overflow',
+                              'Reconstruction', ],
+        'increase_reload_speed': ['Celerity', 'Dual Loader', 'Elemental Capacitor', 'Feeding Frenzy',
+                                  'Surplus', 'Threat Detector', 'Firefly', 'Frenzy', 'Outlaw',
+                                  'Rapid Hit', 'Sneak Bow', 'Impulse Amplifier',
+                                  # 'Underdog',
+                                  ],
+        'increase_reserves': ['Field Prep', ],
+        'increase_stow_speed': ['Field Prep', ],
+        'increase_draw_speed': ['Field Prep', 'Quickdraw'],
+        'increase_mobility': ['Killing Wind', ],
+        'increase_speed': ["Assassin's Blade", ],
+        'increase_precision_hit_targeting_while_hip_firing': ['Hip-Fire Grip'],
+        'increase_movement_while_ads_speed': ['Elemental Capacitor', 'Moving Target', ],
+        'increase_zoom': ['Rangefinder', ],
+        'increase_velocity': ['Rangefinder', 'Impulse Amplifier', ],
+        'increase_blast_radius': ['Danger Zone', ],
+        'increase_ads_speed': ['Tunnel Vision', 'Snapshot Sights'],
+        'increase_target_acquisition': ['Iron Gaze', 'Moving Target', 'Celerity', 'Tunnel Vision', ],
+        'increase_bow_hold_time': ['Sneak Bow'],
 
         'regen_class_energy': ['Energy Transfer', 'Wellspring', ],
         'regen_grenade_energy': ['Demolitionist', 'Wellspring', ],
