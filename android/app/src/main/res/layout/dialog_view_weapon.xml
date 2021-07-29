@@ -12,52 +12,6 @@
         android:orientation="vertical">
 
 
-        <!--        <TextView-->
-        <!--            android:id="@+id/textViewElement"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_margin="4dp"-->
-        <!--            android:padding="4dp"-->
-        <!--            android:text="@string/default_element"-->
-        <!--            android:textColor="@android:color/background_light"-->
-        <!--            android:textSize="18sp" />-->
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/textViewAmmo"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_margin="4dp"-->
-        <!--            android:padding="4dp"-->
-        <!--            android:text="@string/default_ammo"-->
-        <!--            android:textColor="@android:color/background_light"-->
-        <!--            android:textSize="18sp" />-->
-
-
-        <!--        <ImageView-->
-        <!--            android:id="@+id/imageViewElement_icon"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            app:srcCompat="@mipmap/icons_destinydamagetypedefinition_ceb2f6197dccf3958bb31cc783eb97a0" />-->
-
-
-        <!--        <ImageView-->
-        <!--            android:id="@+id/imageViewAmmo_icon"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            app:srcCompat="@mipmap/icons_b6d3805ca8400272b7ee7935b0b75c79" />-->
-
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/textViewSlot"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_margin="4dp"-->
-        <!--            android:padding="4dp"-->
-        <!--            android:text="@string/default_slot"-->
-        <!--            android:textColor="@android:color/background_light"-->
-        <!--            android:textSize="18sp" />-->
-
-
         <ImageView
             android:id="@+id/imageViewScreenshot"
             android:layout_width="wrap_content"
@@ -75,59 +29,583 @@
             android:textSize="18sp" />
 
 
-        <LinearLayout
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textViewPerk_column_1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:breakStrategy="high_quality"
-                android:ellipsize="none"
-                android:padding="4dp"
-                android:text="@string/default_pc1"
-                android:textColor="@android:color/background_light"
-                android:textSize="13sp" />
+            <TableRow
+                android:id="@+id/row1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/textViewPerk_column_2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:padding="4dp"
-                android:text="@string/default_pc2"
-                android:textColor="@android:color/background_light"
-                android:textSize="13sp" />
+                <ImageView
+                    android:id="@+id/pr1_perk_1"
 
-            <TextView
-                android:id="@+id/textViewPerk_column_3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:padding="4dp"
-                android:text="@string/default_pc3"
-                android:textColor="@android:color/background_light"
-                android:textSize="13sp" />
+                    android:layout_height="50dp"
 
-            <TextView
-                android:id="@+id/textViewPerk_column_4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
+                    android:layout_weight="1"
 
+                    android:tag="1,1" />
 
-                android:padding="4dp"
-                android:text="@string/default_pc4"
-                android:textColor="@android:color/background_light"
-                android:textSize="13sp" />
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/pr1_perk_2"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="1,2"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr1_perk_3"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="1,3"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr1_perk_4"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="1,4"
+
+                     />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/pr2_perk_1"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="2,1"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr2_perk_2"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="2,2"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr2_perk_3"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="2,3"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr2_perk_4"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="2,4"
+
+                     />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/pr3_perk_1"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="3,1"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr3_perk_2"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="3,2"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr3_perk_3"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="3,3"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr3_perk_4"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="3,4"
+
+                     />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/pr4_perk_1"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="4,1"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr4_perk_2"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="4,2"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr4_perk_3"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="4,3"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr4_perk_4"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="4,4"
+
+                     />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/pr5_perk_1"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="5,1"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr5_perk_2"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="5,2"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr5_perk_3"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="5,3"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr5_perk_4"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="5,4"
+
+                     />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/pr6_perk_1"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="6,1"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr6_perk_2"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="6,2"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr6_perk_3"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="6,3"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr6_perk_4"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="6,4"
+
+                     />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/pr7_perk_1"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="7,1"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr7_perk_2"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="7,2"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr7_perk_3"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="7,3"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr7_perk_4"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="7,4"
+
+                     />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row8"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/pr8_perk_1"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="8,1"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr8_perk_2"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="8,2"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr8_perk_3"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="8,3"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr8_perk_4"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="8,4"
+
+                     />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row9"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/pr9_perk_1"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="9,1"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr9_perk_2"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="9,2"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr9_perk_3"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="9,3"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr9_perk_4"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="9,4"
+
+                     />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row10"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/pr10_perk_1"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="10,1"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr10_perk_2"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="10,2"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr10_perk_3"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="10,3"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr10_perk_4"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="10,4"
+
+                     />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row11"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/pr11_perk_1"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="11,1"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr11_perk_2"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="11,2"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr11_perk_3"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="11,3"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr11_perk_4"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="11,4"
+
+                     />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/row12"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/pr12_perk_1"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="12,1"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr12_perk_2"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="12,2"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr12_perk_3"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+
+                    android:tag="12,3"
+
+                     />
+
+                <ImageView
+                    android:id="@+id/pr12_perk_4"
+                    android:layout_height="50dp"
+
+                    android:layout_weight="1"
+                    
+                    android:tag="12,4"
+                    
+                     />
+
+            </TableRow>
+
+        </TableLayout>
 
 
         <Button
@@ -137,10 +615,11 @@
             android:layout_height="0dp"
             android:layout_margin="4dp"
             android:layout_weight="1"
-            android:background="@android:color/holo_blue_dark"
+            android:background="@android:color/white"
             android:text="@string/close_button_text"
             android:textColor="@android:color/background_light"
             android:textSize="18sp" />
+
 
 
     </LinearLayout>
