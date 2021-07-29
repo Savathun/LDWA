@@ -19,7 +19,6 @@ class Database:
 
 def retrieve_manifest(manifest_location):
     """ """
-
     urllib.request.urlretrieve('https://www.bungie.net' + manifest_location, 'manifest\\manifest.zip')
 
 
@@ -71,7 +70,9 @@ def generate_weapons_dataframe(inventory_df, perk_df, plug_sets_df, damage_type_
                 ['itemTypeDisplayName', 'displayProperties_name', 'defaultDamageTypeHash',
                  'equippingBlock_equipmentSlotTypeHash', 'equippingBlock_ammoType', 'sockets_socketEntries']])
 
-    ammo_type_list = ['None', 'Primary', 'Special', 'Heavy', 'Unknown']
+    ammo_type_list = [item['identifier'] for item in
+                      requests.get("https://github.com/Bungie-net/api/raw/master/openapi.json").json()[
+                          'components']['schemas']['Destiny.DestinyAmmunitionType']['x-enum-values']]
     weapons_df = reduce_inventory_to_weapons(inventory_df)
     weapons_df['defaultDamageTypeHash'] = pandas.DataFrame(
         weapons_df['defaultDamageTypeHash'].apply(
