@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,7 +17,8 @@ import androidx.fragment.app.DialogFragment;
 
 public class ViewWeaponDialog extends DialogFragment {
     private Weapon weapon;
-    public ViewWeaponDialog() {}
+    private final DataAdapter dataAdapter;
+    public ViewWeaponDialog(DataAdapter dataAdapter) {this.dataAdapter = dataAdapter;}
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -40,18 +43,30 @@ public class ViewWeaponDialog extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_view_weapon, null);
         ImageView screenshot = dialogView.findViewById(R.id.imageViewScreenshot);
         TextView synergyTextView = dialogView.findViewById(R.id.textViewSynergy);
-        TextView perk_column_1TextView = dialogView.findViewById(R.id.textViewPerk_column_1);
-        TextView perk_column_2TextView = dialogView.findViewById(R.id.textViewPerk_column_2);
-        TextView perk_column_3TextView = dialogView.findViewById(R.id.textViewPerk_column_3);
-        TextView perk_column_4TextView = dialogView.findViewById(R.id.textViewPerk_column_4);
+        String [] perk_column_1 = weapon.getPerk_column_1().split(", ");
+        String [] perk_column_2 = weapon.getPerk_column_2().split(", ");
+        String [] perk_column_3 = weapon.getPerk_column_3().split(", ");
+        String [] perk_column_4 = weapon.getPerk_column_4().split(", ");
+        String [][] perks = {perk_column_1, perk_column_2, perk_column_3, perk_column_4};
+
+        for(int i = 1; i <= 4; i++){
+            for( int j = 1 ; j <= 12; j++){
+                ImageView temp = dialogView.findViewWithTag(j + "," + i);
+                if(perks[i-1].length >= j) {
+                    temp.setContentDescription(perks[i-1][j-1]);
+                    int id = this.requireContext().getResources().getIdentifier(dataAdapter.selectPerk(perks[i-1][j-1].substring(1, perks[i-1][j-1].length()-1)), "drawable", this.requireContext().getPackageName());
+                    temp.setImageResource(id);
+
+                }
+                else temp.setLayoutParams(new TableRow.LayoutParams(0,0));
+            }
+        }
+
+
 
         Button buttonClose = dialogView.findViewById(R.id.buttonClose);
 
         synergyTextView.setText(weapon.getSynergy());
-        perk_column_1TextView.setText(weapon.getPerk_column_1());
-        perk_column_2TextView.setText(weapon.getPerk_column_2());
-        perk_column_3TextView.setText(weapon.getPerk_column_3());
-        perk_column_4TextView.setText(weapon.getPerk_column_4());
         screenshot.setImageResource(this.requireContext().getResources().getIdentifier(weapon.getScreenshot(), "drawable", this.requireContext().getPackageName()));
 
         builder.setView(dialogView).setMessage(" ");
