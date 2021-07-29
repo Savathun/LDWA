@@ -123,6 +123,19 @@ def generate_set_of_available_traits(weapons_df):
                                    weapons_df['perk_column_3'].explode().unique())))
 
 
+def create_image_archive(weapons_df, perk_df):
+    if not os.path.exists('images'):
+        os.mkdir('images')
+    for col in ['Icon', 'Screenshot', 'AmmoIcon', 'ElementIcon']:
+        for path in weapons_df[col].values.tolist():
+            if not os.path.exists(path):
+                urllib.request.urlretrieve('https://www.bungie.net' + path, 'images\\'+path[25:].replace('/', '_').lower())
+    for path in perk_df.displayProperties_icon.values.tolist():
+        if not os.path.exists(path):
+            try:
+                urllib.request.urlretrieve('https://www.bungie.net' + path, 'images\\'+path[25:].replace('/', '_').lower())
+            except:
+                print(path)
 
 
 # def main():
