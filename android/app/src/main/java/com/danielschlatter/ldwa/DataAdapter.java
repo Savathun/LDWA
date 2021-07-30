@@ -1,5 +1,6 @@
 package com.danielschlatter.ldwa;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -12,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 public class DataAdapter {
 
@@ -50,18 +52,43 @@ public class DataAdapter {
 
     public Cursor selectAll() {
         try {
-            Cursor mCur = mDb.rawQuery("select * from weapons order by name", null);
-            if (mCur != null) {
-                mCur.moveToNext();
-            }
-            return mCur;
+            return mDb.rawQuery("select * from weapons order by name", null);
         } catch (SQLException mSQLException) {
             Log.e(TAG, "getTestData >>"+ mSQLException.toString());
             throw mSQLException;
         }
     }
+    public String selectPerk(String name) {
+        try {
+            Cursor mCur = mDb.rawQuery("select displayProperties_icon from perks where displayProperties_name = ?" , new String[] {name});
+            mCur.moveToNext();
+            String path = mCur.getString(mCur.getColumnIndex("displayProperties_icon"));
+            mCur.close();
+            return path.substring(25, path.length()-4).replace('/', '_');
 
 
+
+
+        } catch (SQLException mSQLException) {
+            Log.e(TAG, "getTestData >>"+ mSQLException.toString() + name);
+            throw mSQLException;
+        }
+    }
+    public void insertRoll(String weapon, int p1, int p2, int p3, int p4){
+        ContentValues cv = new ContentValues();
+        cv.put("weapon", weapon); cv.put("p1", p1); cv.put("p2", p2); cv.put("p3", p3); cv.put("p4", p4);
+        mDb.insert("saved_rolls", null, cv);
+    }
+    public void removeRoll(String weapon, int p1, int p2, int p3, int p4){
+        mDb.delete("saved_rolls", "weapon = ? and p1 = ? and p2 = ? and p3 = ? and p4 = ?",
+                new String []{weapon, String.valueOf(p1), String.valueOf(p2), String.valueOf(p3), String.valueOf(p4)});
+    }
+    public void dso(){
+        mDb.execSQL("create table if not exists saved_rolls (weapon text, p1 integer, p2 integer, p3 integer, p4 integer)");
+    }
+    public Cursor selectRolls(String weapon){
+        return mDb.rawQuery("select * from saved_rolls where weapon = ?", new String[]{weapon});
+    }
     private static class DataBaseHelper extends SQLiteOpenHelper {
 
         private static final String TAG = "DataBaseHelper"; // Tag just for the LogCat window
@@ -82,11 +109,18 @@ public class DataAdapter {
             boolean mDataBaseExist = checkDataBase();
             if(!mDataBaseExist) {
                 this.getReadableDatabase();
+                try{
+                    mDataBase.rawQuery("create table saved_rolls(text weapon, int p1, int p2, int p3, int p4)", null);
+                } catch (SQLException mSQLException) {
+                    Log.e(TAG, "getTestData >>"+ mSQLException.toString());
+                    throw mSQLException;
+                }
                 this.close();
 
                 // Copy the database from assests
                 copyDataBase();
                 Log.e(TAG, "createDatabase database created");
+
 
             }
         }

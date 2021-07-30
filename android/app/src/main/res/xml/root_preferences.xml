@@ -10,7 +10,7 @@
             />
 
         <EditTextPreference
-            app:key="reply"
+            app:key=""
             app:title="Export Configuration to File"
             />
 

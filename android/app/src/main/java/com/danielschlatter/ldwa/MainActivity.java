@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,15 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,14 +34,36 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
+        URL obj = null;
+        try {
+            obj = new URL("https://raw.githubusercontent.com/Savathun/LDWA/main/python/manifest/manifest_version.txt");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        try {
+            assert obj != null;
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            con.setRequestMethod("GET");
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+            if(!getString(R.string.manifest_version).equals(in.readLine())){
+                Log.e("update", "update needed");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         weaponList = new ArrayList<>();
         dataAdapter = new DataAdapter(this);
         dataAdapter.createDatabase();
         dataAdapter.open();
+        dataAdapter.dso();
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         WeaponAdapter weaponAdapter = new WeaponAdapter(this, weaponList);
 
@@ -72,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showWeapon (int weaponToShow) {
-        ViewWeaponDialog viewWeaponDialog = new ViewWeaponDialog();
+        ViewWeaponDialog viewWeaponDialog = new ViewWeaponDialog(dataAdapter);
         viewWeaponDialog.sendSelectedWeapon(weaponList.get(weaponToShow));
         viewWeaponDialog.show(getSupportFragmentManager(), "");
     }
