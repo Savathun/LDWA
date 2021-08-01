@@ -72,7 +72,7 @@ public class ViewWeaponDialog extends DialogFragment {
                 for (int j = 0; j < perks[i].length; j++) {
                     RadioButton temp = new RadioButton(this.requireContext());
                     temp.setContentDescription(perks[i][j]);
-                    int id = this.requireContext().getResources().getIdentifier(dataAdapter.selectPerk(perks[i][j].substring(1, perks[i][j].length() - 1)), "drawable", this.requireContext().getPackageName());
+                    int id = this.requireContext().getResources().getIdentifier(dataAdapter.selectPerk(perks[i][j].substring(1, perks[i][j].length() - 1)), "mipmap", this.requireContext().getPackageName());
                     temp.setForeground(getResources().getDrawable(id));
                     temp.setBackgroundResource(R.drawable.perk_background);
                     temp.setGravity(Gravity.CENTER);
@@ -114,7 +114,7 @@ public class ViewWeaponDialog extends DialogFragment {
                 row.setGravity(Gravity.CENTER_VERTICAL);
                 ll.addView(row);
             }
-
+            cursor.close();
             Button buttonSave = dialogView.findViewById(R.id.save_button);
             buttonSave.setOnClickListener(v -> {
 
