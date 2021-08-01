@@ -13,7 +13,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Arrays;
 
 public class DataAdapter {
 
@@ -54,7 +53,7 @@ public class DataAdapter {
         try {
             return mDb.rawQuery("select * from weapons order by name", null);
         } catch (SQLException mSQLException) {
-            Log.e(TAG, "getTestData >>"+ mSQLException.toString());
+            Log.e(TAG, "selectall failed"+ mSQLException.toString());
             throw mSQLException;
         }
     }
@@ -65,12 +64,8 @@ public class DataAdapter {
             String path = mCur.getString(mCur.getColumnIndex("displayProperties_icon"));
             mCur.close();
             return path.substring(25, path.length()-4).replace('/', '_');
-
-
-
-
         } catch (SQLException mSQLException) {
-            Log.e(TAG, "getTestData >>"+ mSQLException.toString() + name);
+            Log.e(TAG, "selectperk failed"+ mSQLException.toString() + name);
             throw mSQLException;
         }
     }
@@ -83,9 +78,7 @@ public class DataAdapter {
         mDb.delete("saved_rolls", "weapon = ? and p1 = ? and p2 = ? and p3 = ? and p4 = ?",
                 new String []{weapon, String.valueOf(p1), String.valueOf(p2), String.valueOf(p3), String.valueOf(p4)});
     }
-    public void dso(){
-        mDb.execSQL("create table if not exists saved_rolls (weapon text, p1 integer, p2 integer, p3 integer, p4 integer)");
-    }
+
     public Cursor selectRolls(String weapon){
         return mDb.rawQuery("select * from saved_rolls where weapon = ?", new String[]{weapon});
     }
@@ -110,7 +103,8 @@ public class DataAdapter {
             if(!mDataBaseExist) {
                 this.getReadableDatabase();
                 try{
-                    mDataBase.rawQuery("create table saved_rolls(text weapon, int p1, int p2, int p3, int p4)", null);
+                    Cursor cur = mDataBase.rawQuery("create table saved_rolls(text weapon, int p1, int p2, int p3, int p4)", null);
+                    cur.close();
                 } catch (SQLException mSQLException) {
                     Log.e(TAG, "getTestData >>"+ mSQLException.toString());
                     throw mSQLException;
@@ -146,8 +140,6 @@ public class DataAdapter {
 
         // Open the database, so we can query it
         public void openDataBase() throws SQLException {
-            // Log.v("DB_PATH", DB_FILE.getAbsolutePath());
-            // mDataBase = SQLiteDatabase.openDatabase(DB_FILE, SQLiteDatabase.CREATE_IF_NECESSARY);
             mDataBase = SQLiteDatabase.openDatabase(String.valueOf(DB_FILE), null, SQLiteDatabase.NO_LOCALIZED_COLLATORS);
         }
 
