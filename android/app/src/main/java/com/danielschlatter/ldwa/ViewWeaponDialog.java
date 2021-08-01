@@ -103,8 +103,11 @@ public class ViewWeaponDialog extends DialogFragment {
                 Button button = new Button(requireContext());
                 button.setBackgroundResource(R.drawable.x);
                 button.setOnClickListener(view -> {
+                    Cursor temp_cursor = dataAdapter.selectRolls(weapon.getName());
+                    temp_cursor.moveToPosition((Integer) row.getTag());
                     ll.removeView(row);
-                    dataAdapter.removeRoll(weapon.getName(), cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4));
+                    dataAdapter.removeRoll(weapon.getName(), temp_cursor.getInt(1), temp_cursor.getInt(2), temp_cursor.getInt(3), temp_cursor.getInt(4));
+                    temp_cursor.close();
                 });
                 LinearLayout.LayoutParams parameters = new LinearLayout.LayoutParams(10, 70, 0.6f);
                 parameters.setMargins(0, 0, 10, 0);
@@ -112,6 +115,7 @@ public class ViewWeaponDialog extends DialogFragment {
                 button.setGravity(Gravity.CENTER_VERTICAL);
                 row.addView(button);
                 row.setGravity(Gravity.CENTER_VERTICAL);
+                row.setTag(cursor.getPosition());
                 ll.addView(row);
             }
             cursor.close();
@@ -131,6 +135,8 @@ public class ViewWeaponDialog extends DialogFragment {
                 Button button = new Button(requireContext());
                 button.setBackgroundResource(R.drawable.x);
                 button.setOnClickListener(view -> {
+                    Cursor temp_cursor = dataAdapter.selectRolls(weapon.getName());
+                    temp_cursor.moveToPosition((Integer) row.getTag());
                     ll.removeView(row);
                     dataAdapter.removeRoll(weapon.getName(), ids[0], ids[1], ids[2], ids[3]);
                 });
@@ -140,6 +146,9 @@ public class ViewWeaponDialog extends DialogFragment {
                 button.setGravity(Gravity.CENTER_VERTICAL);
                 row.addView(button);
                 row.setGravity(Gravity.CENTER_VERTICAL);
+                Cursor temp_cursor = dataAdapter.selectRolls(weapon.getName());
+                row.setTag(temp_cursor.getCount());
+                temp_cursor.close();
                 ll.addView(row);
                 dataAdapter.insertRoll(weapon.getName(), ids[0], ids[1], ids[2], ids[3]);
             });
