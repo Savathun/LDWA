@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         dataAdapter = new DataAdapter(this);
         dataAdapter.createDatabase();
         dataAdapter.open();
-        dataAdapter.dso();
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         WeaponAdapter weaponAdapter = new WeaponAdapter(this, weaponList);
 
