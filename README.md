@@ -58,6 +58,6 @@ LDWA is essentially an Android application that functions as a  database browser
  A recyclerView and some SQL queries are used to display the database, as shown in the first screenshot above, with the full data in each row being displayed in the DialogFragment for each weapon. Data on the rolls you want saved is saved to the sql database, in a seperate table. This obviously would not persist if I copy and replace the database, which is why the datbase updating will be changed later to ensure that data persists. 
  
  ## How can I use the app? 
- 
- TODO: generate an apk people can download
+
+Go to the [releases page](https://github.com/Savathun/LDWA/releases) and download the APK from the latest release on to your android phone. Make sure you have the setting "Install from Unknown Sources" enabled on your phone. Then just click the file in your file manager, and android should do the rest. 
  
