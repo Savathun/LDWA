@@ -2,7 +2,7 @@
 
 ## What is it?
 
-LDWA is essentially an Android application that functions as a  database browser, with the database being all the legendary, non-sunset weapons present in Destiny 2, 
+LDWA is essentially an Android application that functions as a database browser, with the database being all the legendary, non-sunset weapons present in [Destiny 2](https://www.bungie.net/7/en/Destiny/NewLight), 
  made by Bungie, Inc. Currently, the app can browse the weapons present as of July, 2021. 
  
  On the main page, a variety of information is shown for each weapon, including the name, icon, element, and ammo type. [insert screenshot]
@@ -32,7 +32,7 @@ LDWA is essentially an Android application that functions as a  database browser
  
  Current solutions being web based means you have to rely on chrome instead of a dedicated app, which has some small advantages in terms of layout and other features. 
  
- ## Isn't D2Gunsmith.com a far superior product?
+ ## Isn't [D2Gunsmith](https://D2Gunsmith.com) a far superior product?
  
  In general, I absolutely agree. I love their product. I think the UI is great, all the extra info they have on perks and such is great, all the details and such is great. My product lacks quite a few features that that product has However, they suffer from all of the shortfalls mentioned in the previous section, namely:
  - It is a web application, so no dedicated app, and also requires an internet connection
@@ -51,7 +51,7 @@ LDWA is essentially an Android application that functions as a  database browser
  
  ## How is the database generated?
  
- I generate the database using the code in the python folder. I retrieve the manifest from Bungie, which is a large compressed sql database with some 40+ tables, and thousands and thousands of rows in some of the tables, with each table having only one column, as each row is just one very large JSON string. I extract all the information I need through use of pandas' DataFrames and Series. I then generate the much smaller sql database I need, and I retrieve the images with HTTP requests for the Bungie.net paths stored in my small database. These images and the database are then copied (later, this would be changed to something a little less... manual) to the android application, which will handle the rest. 
+ I generate the database using the code in the [python folder](/python). I retrieve the manifest from Bungie, which is a large compressed sql database with some 40+ tables, and thousands and thousands of rows in some of the tables, with each table having only one column, as each row is just one very large JSON string. I extract all the information I need through use of pandas' [DataFrames](https://pandas.pydata.org/pandas-docs/stable/reference/frame.html) and [Series](https://pandas.pydata.org/pandas-docs/stable/reference/series.html). I then generate the much smaller sql database I need, and I retrieve the images with HTTP requests for the Bungie.net paths stored in my small database. These images and the database are then copied (later, this would be changed to something a little less... manual) to the android application, which will handle the rest. 
  
  ## How does the app work?
  
