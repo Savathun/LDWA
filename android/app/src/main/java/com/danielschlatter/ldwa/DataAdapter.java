@@ -28,6 +28,7 @@ public class DataAdapter {
     public void createDatabase() throws SQLException {
         try {
             mDbHelper.createDataBase();
+
         } catch (IOException mIOException) {
             Log.e(TAG, mIOException.toString() + "  UnableToCreateDatabase");
             throw new Error("UnableToCreateDatabase");
@@ -53,7 +54,7 @@ public class DataAdapter {
         try {
             return mDb.rawQuery("select * from weapons order by name", null);
         } catch (SQLException mSQLException) {
-            Log.e(TAG, "selectall failed"+ mSQLException.toString());
+            Log.e(TAG, "selectall failed "+ mSQLException.toString());
             throw mSQLException;
         }
     }
@@ -102,20 +103,19 @@ public class DataAdapter {
             boolean mDataBaseExist = checkDataBase();
             if(!mDataBaseExist) {
                 this.getReadableDatabase();
-                try{
-                    Cursor cur = mDataBase.rawQuery("create table saved_rolls(text weapon, int p1, int p2, int p3, int p4)", null);
-                    cur.close();
-                } catch (SQLException mSQLException) {
-                    Log.e(TAG, "getTestData >>"+ mSQLException.toString());
-                    throw mSQLException;
-                }
+
                 this.close();
 
                 // Copy the database from assests
                 copyDataBase();
                 Log.e(TAG, "createDatabase database created");
-
-
+                openDataBase();
+                try{
+                    mDataBase.execSQL("create table saved_rolls(weapon text, p1 int, p2 int, p3 int, p4 int)");
+                } catch (SQLException mSQLException) {
+                    Log.e(TAG, "table select_rolls creation failed >>"+ mSQLException.toString());
+                    throw mSQLException;
+                }
             }
         }
 
