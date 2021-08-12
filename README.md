@@ -5,18 +5,20 @@
 LDWA is essentially an Android application that functions as a database browser, with the database being all the legendary, non-sunset weapons present in [Destiny 2](https://www.bungie.net/7/en/Destiny/NewLight), 
  made by Bungie, Inc. Currently, the app can browse the weapons present as of July, 2021. 
  
- On the main page, a variety of information is shown for each weapon, including the name, icon, element, and ammo type. [insert screenshot]
+ On the main page, a variety of information is shown for each weapon, including the name, icon, element, and ammo type. 
+ 
+ ![Main Page](/screenshots/main_ss.png)
  
  Clicking on a weapon opens up a view with a bit more information, including the weapon type, archetype, a screenshot, all the perks that can roll on this weapon,
  as well as a programmatically generated list of perks with good synergy. I categorized all perks based on trigger and effect, 
  and used some logic to highlight a roll if one perk from one category can roll with one perk from another particularly synergistic category. 
  This currently is quite primitive and refinement of those categories and whats listed as synergistic is planned for a future release. 
  
- [insert screenshot] 
+  ![Fragment View](/screenshots/fragment_ss.png)
  
  You can also save rolls of the weapon to the app, if you so please, and can go view those at any time, if perhaps you want to save a list of rolls you are seeking.
  
- [insert screenshot]
+  ![Saved Rolls](/screenshots/saved_rolls_ss.png)
  
  ## How is it 'Lightweight'?
  
