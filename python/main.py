@@ -1,8 +1,6 @@
 import sqlite3
 import time
-import traceback
 
-import numpy as np
 import pandas
 import zipfile
 import json
@@ -61,7 +59,8 @@ def generate_weapons_dataframe(inventory_df, perk_df, plug_sets_df, damage_type_
             inventory_df[
                 ['sockets_socketEntries_{}_randomizedPlugSetHash'.format(x) for x in range(1, 5)]] = pandas.DataFrame(
                 inventory_df[['sockets_socketEntries_{}'.format(x) for x in range(1, 5)]].apply(
-                    lambda x: x.apply(lambda y: y['randomizedPlugSetHash'] if 'randomizedPlugSetHash' in y else 0)),
+                    lambda x: x.apply(lambda y: y['randomizedPlugSetHash'] if 'randomizedPlugSetHash' in y else str(
+                        y['singleInitialItemHash']))),
                 index=inventory_df.index)
             return inventory_df.drop(
                 ['sockets_socketEntries'] + ['sockets_socketEntries_{}'.format(x) for x in range(0, 10)], axis=1)
@@ -114,7 +113,8 @@ def generate_weapons_dataframe(inventory_df, perk_df, plug_sets_df, damage_type_
                 lambda y: [
                     perk_df.loc[perk_df['hash'] == z['plugItemHash']]['displayProperties_name'].values[0] for z
                     in plug_sets_df.loc[plug_sets_df['hash'] == y]['reusablePlugItems'].values[0] if
-                    z['currentlyCanRoll']] if y != 0 else ['Static'])),
+                    z['currentlyCanRoll']] if type(y) is not str else [
+                    perk_df.loc[perk_df['hash'] == int(y)]['displayProperties_name'].values[0]])),
         index=weapons_df.index)
     weapons_df.columns = ['Type', 'Name', 'Icon', 'Screenshot', 'Element', 'Slot', 'Ammo', 'Archetype',
                           'perk_column_1', 'perk_column_2', 'perk_column_3', 'perk_column_4', 'ElementIcon', 'AmmoIcon']
@@ -173,7 +173,8 @@ def main():
         if not os.path.exists('dataframes/perk_dataframe.pkl') or update_needed:
             inventory_df[
                 inventory_df['itemCategoryHashes'].apply(lambda x: 610365472 in x if type(x) is list else False)][
-                ['hash', 'displayProperties_name', 'displayProperties_icon']].to_pickle('dataframes\\perk_dataframe.pkl')
+                ['hash', 'displayProperties_name', 'displayProperties_icon']].to_pickle(
+                'dataframes\\perk_dataframe.pkl')
         if not os.path.exists('dataframes/weapons_dataframe.pkl') or update_needed:
             generate_weapons_dataframe(inventory_df,
                                        pandas.read_pickle('dataframes/perk_dataframe.pkl'),
@@ -185,7 +186,8 @@ def main():
 
     if not os.path.exists('weapons_database.sqlite') or update_needed:
         weapons_df = pandas.read_pickle('dataframes/weapons_dataframe.pkl')
-        create_image_archive(pandas.read_pickle('dataframes/weapons_dataframe.pkl'), pandas.read_pickle('dataframes/perk_dataframe.pkl'))
+        create_image_archive(pandas.read_pickle('dataframes/weapons_dataframe.pkl'),
+                             pandas.read_pickle('dataframes/perk_dataframe.pkl'))
         categories = {
             'increase_weapon_damage': ['Swashbuckler', 'Adrenaline Junkie', "Assassin's Blade", 'Counterattack',
                                        'One for All',
@@ -360,8 +362,7 @@ def main():
                          for perk_1 in row.perk_column_3 if perk_1 in categories[cat]
                          for perk_2 in row.perk_column_4
                          for cat_2 in ([x for x in list(combo) if x != cat] if len(combo) > 1
-                                       else [cat]) if perk_2 in categories[cat_2]}
-            if row.perk_column_3 != ['Static'] else ['Static'], axis=1)
+                                       else [cat]) if perk_2 in categories[cat_2]}, axis=1)
         weapons_df[['perk_column_{}'.format(x + 1) for x in range(4)] + ['Synergy']] = pandas.DataFrame(
             weapons_df[['perk_column_{}'.format(x + 1) for x in range(4)] + ['Synergy']].apply(
                 lambda x: x.apply(lambda y: str(str(y).strip('[]{}')))), index=weapons_df.index)
@@ -369,6 +370,8 @@ def main():
         engine = sqlalchemy.create_engine('sqlite:///weapons_database.sqlite', echo=False)
         weapons_df.to_sql('weapons', con=engine, if_exists="replace")
         pandas.read_pickle('dataframes/perk_dataframe.pkl').to_sql('perks', con=engine, if_exists="replace")
-        pandas.DataFrame.from_dict({'locale':['en-US']}).to_sql('android_metadata', con=engine, if_exists="replace")
+        pandas.DataFrame.from_dict({'locale': ['en-US']}).to_sql('android_metadata', con=engine, if_exists="replace")
+
+
 if __name__ == '__main__':
     main()
