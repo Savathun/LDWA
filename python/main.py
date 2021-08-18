@@ -122,28 +122,35 @@ def generate_weapons_dataframe(inventory_df, perk_df, plug_sets_df, damage_type_
                        'AmmoIcon', 'perk_column_1', 'perk_column_2', 'perk_column_3', 'perk_column_4']]
 
 
-def generate_set_of_available_traits(weapons_df):
-    import numpy
-    return sorted(set(numpy.append(weapons_df['perk_column_4'].explode().unique(),
-                                   weapons_df['perk_column_3'].explode().unique())))
-
-
 def create_image_archive(weapons_df, perk_df):
+    import numpy as np
+
+    def generate_set_of_available_traits(weapons_df):
+        perks = np.append(weapons_df['perk_column_1'].explode().unique(),
+                          weapons_df['perk_column_2'].explode().unique())
+        perks = np.append(perks, weapons_df['perk_column_3'].explode().unique())
+        perks = np.append(perks, weapons_df['perk_column_4'].explode().unique())
+        return sorted(set(perks))
+
     if not os.path.exists('images'):
         os.mkdir('images')
     for col in ['Icon', 'Screenshot', 'AmmoIcon', 'ElementIcon']:
         for path in weapons_df[col].values.tolist():
             try:
                 if not os.path.exists(path):
-                    urllib.request.urlretrieve('https://www.bungie.net' + path, 'images\\'+path[25:].replace('/', '_').lower())
+                    urllib.request.urlretrieve('https://www.bungie.net' + path,
+                                               'images\\' + path[25:].replace('/', '_').lower())
             except urllib.error.HTTPError:
                 time.sleep(50)
                 urllib.request.urlretrieve('https://www.bungie.net' + path,
                                            'images\\' + path[25:].replace('/', '_').lower())
-    for path in perk_df.displayProperties_icon.values.tolist():
+    perk_set = generate_set_of_available_traits(weapons_df)
+    for perk in perk_set:
+        path = perk_df.loc[perk_df['displayProperties_name'] == perk]['displayProperties_icon'].values[0]
         try:
             if not (path == np.nan or os.path.exists(path)):
-                urllib.request.urlretrieve('https://www.bungie.net' + path, 'images\\'+path[25:].replace('/', '_').lower())
+                urllib.request.urlretrieve('https://www.bungie.net' + path,
+                                           'images\\' + path[25:].replace('/', '_').lower())
         except TypeError:
             pass
 
