@@ -15,37 +15,8 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0cd32814-80c2-4410-895e-edeacbd82848" name="Default Changelist" comment="update images and database">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="0cd32814-80c2-4410-895e-edeacbd82848" name="Default Changelist" comment="fix duplicate perks showing on adept weapons">
       <change beforePath="$PROJECT_DIR$/android/app/src/main/assets/weapons_database.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/assets/weapons_database.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_1046651176.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_1046651176.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_108221785.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_108221785.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_1216319404.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_1216319404.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_1289000550.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_1289000550.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_1907698332.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_1907698332.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_1987769101.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_1987769101.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_2108920981.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_2108920981.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_346136302.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_346136302.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_3653573172.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_3653573172.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_3745990145.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_3745990145.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_4050645223.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_4050645223.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_679281855.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_679281855.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_852551895.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_852551895.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_893527433.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/screenshots_893527433.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_1f0a13d78a9acb919a688adcc21bfdcf.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_1f0a13d78a9acb919a688adcc21bfdcf.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_2107d57224cec616c555f44e45fbf275.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_2107d57224cec616c555f44e45fbf275.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_25c1519d424a56ff538ec015368147f6.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_25c1519d424a56ff538ec015368147f6.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_39d87138cea47e44a37ee78b4bba26d2.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_39d87138cea47e44a37ee78b4bba26d2.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_46649170971e5f606681c6fd0ac5dca1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_46649170971e5f606681c6fd0ac5dca1.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_8f0516ee020d5f9a7bb5fdc3bce36c27.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_8f0516ee020d5f9a7bb5fdc3bce36c27.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_982ae7da9d6cfaba6799e4529a962a49.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_982ae7da9d6cfaba6799e4529a962a49.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_ccac4f90945c16a520b823d2a6cd48a3.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_ccac4f90945c16a520b823d2a6cd48a3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_d4aacbf87aee6820e43a45097aaefa1d.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_d4aacbf87aee6820e43a45097aaefa1d.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_d4c3754ac051cf9617fccd076bd2d57b.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_d4c3754ac051cf9617fccd076bd2d57b.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_e448a8b6661c0d8a4894c8de3427cad5.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_e448a8b6661c0d8a4894c8de3427cad5.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_e5d9d70aadec948e851d443c64ff5d9d.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_e5d9d70aadec948e851d443c64ff5d9d.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_fd815414532978ad2e5decbfc416b9e4.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/icons_fd815414532978ad2e5decbfc416b9e4.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/python/dataframes/weapons_dataframe.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/python/dataframes/weapons_dataframe.pkl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/python/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/python/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -323,7 +294,7 @@
       <option name="presentableId" value="Default" />
       <updated>1625957713530</updated>
       <workItem from="1629330088603" duration="2670000" />
-      <workItem from="1629370797725" duration="1588000" />
+      <workItem from="1629370797725" duration="2822000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1625961871623</created>
@@ -500,7 +471,14 @@
       <option name="project" value="LOCAL" />
       <updated>1629331619519</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Fix not all perks showing on static weapons with multiple selections">
+      <created>1629372821993</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1629372821993</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -570,9 +548,11 @@
     <MESSAGE value="implement settings menu, update work on main activity" />
     <MESSAGE value="change python script to add files directly into android folder" />
     <MESSAGE value="update images and database" />
-    <option name="LAST_COMMIT_MESSAGE" value="update images and database" />
+    <MESSAGE value="Fix not all perks showing on static weapons with multiple selections" />
+    <MESSAGE value="fix duplicate perks showing on adept weapons" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix duplicate perks showing on adept weapons" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/LDWA$main.coverage" NAME="main Coverage Results" MODIFIED="1629372438519" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/python" />
+    <SUITE FILE_PATH="coverage/LDWA$main.coverage" NAME="main Coverage Results" MODIFIED="1629373601179" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/python" />
   </component>
 </project>

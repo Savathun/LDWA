@@ -132,38 +132,27 @@ def create_image_archive(weapons_df, perk_df):
         perks = np.append(perks, weapons_df['perk_column_4'].explode().unique())
         return sorted(set(perks))
 
+    def download_image(db_path, local_dir):
+        local_path = local_dir + db_path[25:].replace('/', '_').lower()
+        try:
+            if not (path == np.nan or os.path.exists(local_path)):
+                urllib.request.urlretrieve('https://www.bungie.net' + db_path, local_path)
+        except TypeError:
+            return
+        except urllib.error.HTTPError:
+            time.sleep(150)
+            urllib.request.urlretrieve('https://www.bungie.net' + db_path, local_path)
+
     for col in ['Icon', 'Screenshot', 'AmmoIcon', 'ElementIcon']:
         for path in weapons_df[col].values.tolist():
-            try:
-                if not os.path.exists(path):
-                    if col == 'Screenshot':
-                        urllib.request.urlretrieve('https://www.bungie.net' + path,
-                                                   '..\\android\\app\\src\\main\\res\\drawable\\' +
-                                                   path[25:].replace('/', '_').lower())
-                    else:
-                        urllib.request.urlretrieve('https://www.bungie.net' + path,
-                                                   '..\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\' +
-                                                   path[25:].replace('/', '_').lower())
-            except urllib.error.HTTPError:
-                time.sleep(150)
-                if col == 'Screenshot':
-                    urllib.request.urlretrieve('https://www.bungie.net' + path,
-                                               '..\\android\\app\\src\\main\\res\\drawable\\' +
-                                               path[25:].replace('/', '_').lower())
-                else:
-                    urllib.request.urlretrieve('https://www.bungie.net' + path,
-                                               '..\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\' +
-                                               path[25:].replace('/', '_').lower())
+            if col == 'Screenshot':
+                download_image(path, '..\\android\\app\\src\\main\\res\\drawable\\')
+            else:
+                download_image(path, '..\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\')
     perk_set = generate_set_of_available_traits(weapons_df)
     for perk in perk_set:
         path = perk_df.loc[perk_df['displayProperties_name'] == perk]['displayProperties_icon'].values[0]
-        try:
-            if not (path == np.nan or os.path.exists(path)):
-                urllib.request.urlretrieve('https://www.bungie.net' + path,
-                                           '..\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\' +
-                                           path[25:].replace('/', '_').lower())
-        except TypeError:
-            pass
+        download_image(path, '..\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\')
 
 
 def main():
