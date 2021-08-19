@@ -60,8 +60,8 @@ def generate_weapons_dataframe(inventory_df, perk_df, plug_sets_df, damage_type_
             inventory_df[
                 ['sockets_socketEntries_{}_randomizedPlugSetHash'.format(x) for x in range(1, 5)]] = pandas.DataFrame(
                 inventory_df[['sockets_socketEntries_{}'.format(x) for x in range(1, 5)]].apply(
-                    lambda x: x.apply(lambda y: y['randomizedPlugSetHash'] if 'randomizedPlugSetHash' in y else str(
-                        y['singleInitialItemHash']))),
+                    lambda x: x.apply(lambda y: y['randomizedPlugSetHash'] if 'randomizedPlugSetHash' in y else
+                        y['reusablePlugSetHash'])),
                 index=inventory_df.index)
             return inventory_df.drop(
                 ['sockets_socketEntries'] + ['sockets_socketEntries_{}'.format(x) for x in range(0, 10)], axis=1)
@@ -114,8 +114,7 @@ def generate_weapons_dataframe(inventory_df, perk_df, plug_sets_df, damage_type_
                 lambda y: [
                     perk_df.loc[perk_df['hash'] == z['plugItemHash']]['displayProperties_name'].values[0] for z
                     in plug_sets_df.loc[plug_sets_df['hash'] == y]['reusablePlugItems'].values[0] if
-                    z['currentlyCanRoll']] if type(y) is not str else [
-                    perk_df.loc[perk_df['hash'] == int(y)]['displayProperties_name'].values[0]])),
+                    z['currentlyCanRoll']]))),
         index=weapons_df.index)
     weapons_df.columns = ['Type', 'Name', 'Icon', 'Screenshot', 'Element', 'Slot', 'Ammo', 'Archetype',
                           'perk_column_1', 'perk_column_2', 'perk_column_3', 'perk_column_4', 'ElementIcon', 'AmmoIcon']
@@ -133,8 +132,6 @@ def create_image_archive(weapons_df, perk_df):
         perks = np.append(perks, weapons_df['perk_column_4'].explode().unique())
         return sorted(set(perks))
 
-    if not os.path.exists('images'):
-        os.mkdir('images')
     for col in ['Icon', 'Screenshot', 'AmmoIcon', 'ElementIcon']:
         for path in weapons_df[col].values.tolist():
             try:
@@ -148,7 +145,7 @@ def create_image_archive(weapons_df, perk_df):
                                                    '..\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\' +
                                                    path[25:].replace('/', '_').lower())
             except urllib.error.HTTPError:
-                time.sleep(50)
+                time.sleep(150)
                 if col == 'Screenshot':
                     urllib.request.urlretrieve('https://www.bungie.net' + path,
                                                '..\\android\\app\\src\\main\\res\\drawable\\' +
@@ -172,6 +169,7 @@ def create_image_archive(weapons_df, perk_df):
 def main():
     os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
     update_needed, location = check_manifest_updates()
+
     if update_needed:
         open('manifest\\manifest_version.txt', "r+").write(location.split('/')[-1][18:-8])
         retrieve_manifest(location)
@@ -205,7 +203,7 @@ def main():
                                        pandas.read_pickle('dataframes/PresentationNode_dataframe.pkl')
                                        ).to_pickle('dataframes/weapons_dataframe.pkl')
 
-    if not os.path.exists('weapons_database.sqlite') or update_needed:
+    if update_needed:
         weapons_df = pandas.read_pickle('dataframes/weapons_dataframe.pkl')
         create_image_archive(pandas.read_pickle('dataframes/weapons_dataframe.pkl'),
                              pandas.read_pickle('dataframes/perk_dataframe.pkl'))
