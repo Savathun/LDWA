@@ -61,7 +61,7 @@ def generate_weapons_dataframe(inventory_df, perk_df, plug_sets_df, damage_type_
                 ['sockets_socketEntries_{}_randomizedPlugSetHash'.format(x) for x in range(1, 5)]] = pandas.DataFrame(
                 inventory_df[['sockets_socketEntries_{}'.format(x) for x in range(1, 5)]].apply(
                     lambda x: x.apply(lambda y: y['randomizedPlugSetHash'] if 'randomizedPlugSetHash' in y else
-                        y['reusablePlugSetHash'])),
+                    y['reusablePlugSetHash'])),
                 index=inventory_df.index)
             return inventory_df.drop(
                 ['sockets_socketEntries'] + ['sockets_socketEntries_{}'.format(x) for x in range(0, 10)], axis=1)
@@ -111,7 +111,7 @@ def generate_weapons_dataframe(inventory_df, perk_df, plug_sets_df, damage_type_
     weapons_df[['sockets_socketEntries_{}_randomizedPlugSetHash'.format(x) for x in range(1, 5)]] = pandas.DataFrame(
         weapons_df[['sockets_socketEntries_{}_randomizedPlugSetHash'.format(x) for x in range(1, 5)]].apply(
             lambda x: x.apply(
-                lambda y: [
+                lambda y: set([
                     perk_df.loc[perk_df['hash'] == z['plugItemHash']]['displayProperties_name'].values[0] for z
                     in plug_sets_df.loc[plug_sets_df['hash'] == y]['reusablePlugItems'].values[0] if
                     z['currentlyCanRoll']]))),
