@@ -1,6 +1,6 @@
 import sqlite3
+import sys
 import time
-
 import pandas
 import zipfile
 import json
@@ -8,6 +8,7 @@ import urllib.request
 import urllib.error
 import requests
 import os
+import sqlalchemy
 
 
 class Database:
@@ -138,31 +139,44 @@ def create_image_archive(weapons_df, perk_df):
         for path in weapons_df[col].values.tolist():
             try:
                 if not os.path.exists(path):
-                    urllib.request.urlretrieve('https://www.bungie.net' + path,
-                                               'images\\' + path[25:].replace('/', '_').lower())
+                    if col == 'Screenshot':
+                        urllib.request.urlretrieve('https://www.bungie.net' + path,
+                                                   '..\\android\\app\\src\\main\\res\\drawable\\' +
+                                                   path[25:].replace('/', '_').lower())
+                    else:
+                        urllib.request.urlretrieve('https://www.bungie.net' + path,
+                                                   '..\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\' +
+                                                   path[25:].replace('/', '_').lower())
             except urllib.error.HTTPError:
                 time.sleep(50)
-                urllib.request.urlretrieve('https://www.bungie.net' + path,
-                                           'images\\' + path[25:].replace('/', '_').lower())
+                if col == 'Screenshot':
+                    urllib.request.urlretrieve('https://www.bungie.net' + path,
+                                               '..\\android\\app\\src\\main\\res\\drawable\\' +
+                                               path[25:].replace('/', '_').lower())
+                else:
+                    urllib.request.urlretrieve('https://www.bungie.net' + path,
+                                               '..\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\' +
+                                               path[25:].replace('/', '_').lower())
     perk_set = generate_set_of_available_traits(weapons_df)
     for perk in perk_set:
         path = perk_df.loc[perk_df['displayProperties_name'] == perk]['displayProperties_icon'].values[0]
         try:
             if not (path == np.nan or os.path.exists(path)):
                 urllib.request.urlretrieve('https://www.bungie.net' + path,
-                                           'images\\' + path[25:].replace('/', '_').lower())
+                                           '..\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\' +
+                                           path[25:].replace('/', '_').lower())
         except TypeError:
             pass
 
 
 def main():
+    os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
     update_needed, location = check_manifest_updates()
     if update_needed:
         open('manifest\\manifest_version.txt', "r+").write(location.split('/')[-1][18:-8])
         retrieve_manifest(location)
     if not os.path.exists('manifest\\manifest.sqlite') or update_needed:
         extract_manifest()
-
     db = Database('manifest\\manifest.sqlite')
     for name, columns in zip(['InventoryItem', 'DamageType', 'EquipmentSlot', 'PlugSet', 'PresentationNode'],
                              [['hash', 'itemCategoryHashes', 'itemTypeDisplayName', 'displayProperties_name',
@@ -373,8 +387,8 @@ def main():
         weapons_df[['perk_column_{}'.format(x + 1) for x in range(4)] + ['Synergy']] = pandas.DataFrame(
             weapons_df[['perk_column_{}'.format(x + 1) for x in range(4)] + ['Synergy']].apply(
                 lambda x: x.apply(lambda y: str(str(y).strip('[]{}')))), index=weapons_df.index)
-        import sqlalchemy
-        engine = sqlalchemy.create_engine('sqlite:///weapons_database.sqlite', echo=False)
+        engine = sqlalchemy.create_engine('sqlite:///../android/app/src/main/assets/weapons_database.sqlite',
+                                          echo=False)
         weapons_df.to_sql('weapons', con=engine, if_exists="replace")
         pandas.read_pickle('dataframes/perk_dataframe.pkl').to_sql('perks', con=engine, if_exists="replace")
         pandas.DataFrame.from_dict({'locale': ['en-US']}).to_sql('android_metadata', con=engine, if_exists="replace")
