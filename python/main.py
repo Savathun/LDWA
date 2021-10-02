@@ -23,11 +23,11 @@ class Database:
 
 def retrieve_manifest(manifest_location):
     """ """
-    urllib.request.urlretrieve('https://www.bungie.net' + manifest_location, 'manifest\\manifest.zip')
+    urllib.request.urlretrieve('https://www.bungie.net' + manifest_location, 'manifest/manifest.zip')
 
 
 def extract_manifest():
-    with zipfile.ZipFile('manifest\\manifest.zip', 'r') as zipObj:
+    with zipfile.ZipFile('manifest/manifest.zip', 'r') as zipObj:
         zipObj.infolist()[0].filename = 'manifest.sqlite'
         zipObj.extract(zipObj.infolist()[0], path='manifest')
 
@@ -36,7 +36,7 @@ def check_manifest_updates():
     manifest_location = requests.get("https://www.bungie.net/platform/Destiny2/Manifest/",
                                      headers={"X-API-Key": open('api_key.txt', "r").read()}).json()['Response'][
         'mobileWorldContentPaths']['en']
-    return (True, manifest_location) if open('manifest\\manifest_version.txt',
+    return (True, manifest_location) if open('manifest/manifest_version.txt',
                                              "r+").read() != manifest_location.split('/')[-1][18:-8] else (False, 0)
 
 
@@ -146,13 +146,13 @@ def create_image_archive(weapons_df, perk_df):
     for col in ['Icon', 'Screenshot', 'AmmoIcon', 'ElementIcon']:
         for path in weapons_df[col].values.tolist():
             if col == 'Screenshot':
-                download_image(path, '..\\android\\app\\src\\main\\res\\drawable\\')
+                download_image(path, '../android/app/src/main/res/drawable/')
             else:
-                download_image(path, '..\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\')
+                download_image(path, '../android/app/src/main/res/mipmap-xxhdpi/')
     perk_set = generate_set_of_available_traits(weapons_df)
     for perk in perk_set:
         path = perk_df.loc[perk_df['displayProperties_name'] == perk]['displayProperties_icon'].values[0]
-        download_image(path, '..\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\')
+        download_image(path, '../android/app/src/main/res/mipmap-xxhdpi/')
 
 
 def main():
@@ -160,11 +160,11 @@ def main():
     update_needed, location = check_manifest_updates()
 
     if update_needed:
-        open('manifest\\manifest_version.txt', "r+").write(location.split('/')[-1][18:-8])
+        open('manifest/manifest_version.txt', "r+").write(location.split('/')[-1][18:-8])
         retrieve_manifest(location)
-    if not os.path.exists('manifest\\manifest.sqlite') or update_needed:
+    if not os.path.exists('manifest/manifest.sqlite') or update_needed:
         extract_manifest()
-    db = Database('manifest\\manifest.sqlite')
+    db = Database('manifest/manifest.sqlite')
     for name, columns in zip(['InventoryItem', 'DamageType', 'EquipmentSlot', 'PlugSet', 'PresentationNode'],
                              [['hash', 'itemCategoryHashes', 'itemTypeDisplayName', 'displayProperties_name',
                                'displayProperties_icon', 'screenshot',
@@ -182,7 +182,7 @@ def main():
             inventory_df[
                 inventory_df['itemCategoryHashes'].apply(lambda x: 610365472 in x if type(x) is list else False)][
                 ['hash', 'displayProperties_name', 'displayProperties_icon']].to_pickle(
-                'dataframes\\perk_dataframe.pkl')
+                'dataframes/perk_dataframe.pkl')
         if update_needed:
             generate_weapons_dataframe(inventory_df,
                                        pandas.read_pickle('dataframes/perk_dataframe.pkl'),
