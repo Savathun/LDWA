@@ -20,7 +20,6 @@ def main():
     for name, columns in data.name_column_zip:
         if update_needed:
             dataframes.generate_pickle(db, name, columns)
-    update_needed = True
     if update_needed:
         dataframes.generate_perk_pickle()
         dataframes.generate_weapons_pickle()
