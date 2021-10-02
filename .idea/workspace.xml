@@ -15,9 +15,17 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0cd32814-80c2-4410-895e-edeacbd82848" name="Default Changelist" comment="fix duplicate perks showing on adept weapons">
+    <list default="true" id="0cd32814-80c2-4410-895e-edeacbd82848" name="Default Changelist" comment="fix images being unnecessarily downloaded twice">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/app/src/main/assets/weapons_database.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/assets/weapons_database.sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python/dataframes/InventoryItem_dataframe.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/python/dataframes/InventoryItem_dataframe.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python/dataframes/PlugSet_dataframe.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/python/dataframes/PlugSet_dataframe.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python/dataframes/PresentationNode_dataframe.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/python/dataframes/PresentationNode_dataframe.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python/dataframes/perk_dataframe.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/python/dataframes/perk_dataframe.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python/dataframes/weapons_dataframe.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/python/dataframes/weapons_dataframe.pkl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/python/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/python/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python/manifest/manifest.zip" beforeDir="false" afterPath="$PROJECT_DIR$/python/manifest/manifest.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python/manifest/manifest_version.txt" beforeDir="false" afterPath="$PROJECT_DIR$/python/manifest/manifest_version.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -294,7 +302,8 @@
       <option name="presentableId" value="Default" />
       <updated>1625957713530</updated>
       <workItem from="1629330088603" duration="2670000" />
-      <workItem from="1629370797725" duration="2822000" />
+      <workItem from="1629370797725" duration="3681000" />
+      <workItem from="1629866234711" duration="1115000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1625961871623</created>
@@ -478,7 +487,21 @@
       <option name="project" value="LOCAL" />
       <updated>1629372821993</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="fix duplicate perks showing on adept weapons">
+      <created>1629373777363</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1629373777363</updated>
+    </task>
+    <task id="LOCAL-00028" summary="fix images being unnecessarily downloaded twice">
+      <created>1629373837653</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1629373837653</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -550,9 +573,10 @@
     <MESSAGE value="update images and database" />
     <MESSAGE value="Fix not all perks showing on static weapons with multiple selections" />
     <MESSAGE value="fix duplicate perks showing on adept weapons" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix duplicate perks showing on adept weapons" />
+    <MESSAGE value="fix images being unnecessarily downloaded twice" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix images being unnecessarily downloaded twice" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/LDWA$main.coverage" NAME="main Coverage Results" MODIFIED="1629373601179" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/python" />
+    <SUITE FILE_PATH="coverage/LDWA$main.coverage" NAME="main Coverage Results" MODIFIED="1629866355725" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/python" />
   </component>
 </project>

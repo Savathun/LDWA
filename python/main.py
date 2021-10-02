@@ -174,16 +174,16 @@ def main():
                               ['hash', 'displayProperties_name'],
                               ['hash', 'reusablePlugItems'],
                               ['hash', 'displayProperties_name', 'displayProperties_icon']]):
-        if not os.path.exists('dataframes/{}_dataframe.pkl'.format(name)) or update_needed:
+        if update_needed:
             generate_pickle(db, name, columns)
-    if not os.path.exists('dataframes/weapons_dataframe.pkl') or update_needed:
+    if update_needed:
         inventory_df = pandas.read_pickle('dataframes/InventoryItem_dataframe.pkl')
-        if not os.path.exists('dataframes/perk_dataframe.pkl') or update_needed:
+        if update_needed:
             inventory_df[
                 inventory_df['itemCategoryHashes'].apply(lambda x: 610365472 in x if type(x) is list else False)][
                 ['hash', 'displayProperties_name', 'displayProperties_icon']].to_pickle(
                 'dataframes\\perk_dataframe.pkl')
-        if not os.path.exists('dataframes/weapons_dataframe.pkl') or update_needed:
+        if update_needed:
             generate_weapons_dataframe(inventory_df,
                                        pandas.read_pickle('dataframes/perk_dataframe.pkl'),
                                        pandas.read_pickle('dataframes/PlugSet_dataframe.pkl'),
@@ -191,7 +191,6 @@ def main():
                                        pandas.read_pickle('dataframes/EquipmentSlot_dataframe.pkl'),
                                        pandas.read_pickle('dataframes/PresentationNode_dataframe.pkl')
                                        ).to_pickle('dataframes/weapons_dataframe.pkl')
-
     if update_needed:
         weapons_df = pandas.read_pickle('dataframes/weapons_dataframe.pkl')
         create_image_archive(pandas.read_pickle('dataframes/weapons_dataframe.pkl'),
