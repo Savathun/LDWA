@@ -1,68 +1,66 @@
-package com.danielschlatter.ldwa;
+package com.danielschlatter.ldwa
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import androidx.recyclerview.widget.RecyclerView
+import com.danielschlatter.ldwa.WeaponAdapter.ListItemHolder
+import android.view.ViewGroup
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import java.util.ArrayList
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-
-public class WeaponAdapter extends RecyclerView.Adapter<WeaponAdapter.ListItemHolder> {
-    private final MainActivity mainActivity;
-    private final ArrayList<Weapon> weaponList;
-
-    public WeaponAdapter (MainActivity mainActivity, ArrayList<Weapon> weaponList) {
-        this.mainActivity = mainActivity;
-        this.weaponList = weaponList;
-
+class WeaponAdapter(
+    private val mainActivity: MainActivity,
+    private val weaponList: ArrayList<Weapon>
+) : RecyclerView.Adapter<ListItemHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListItemHolder {
+        val listItem = LayoutInflater.from(parent.context)
+            .inflate(R.layout.list_item, parent, false)
+        return ListItemHolder(listItem)
     }
 
-    @NonNull
-    @Override
-    public ListItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View listItem = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item, parent, false);
-
-        return new ListItemHolder(listItem);
+    override fun onBindViewHolder(holder: ListItemHolder, position: Int) {
+        val weapon = weaponList[position]
+        holder.textViewName.text = weapon.name
+        holder.icon.setImageResource(
+            mainActivity.resources.getIdentifier(
+                weapon.getIcon(),
+                "mipmap",
+                mainActivity.packageName
+            )
+        )
+        holder.element.setImageResource(
+            mainActivity.resources.getIdentifier(
+                weapon.getElementIcon(),
+                "mipmap",
+                mainActivity.packageName
+            )
+        )
+        holder.ammo.setImageResource(
+            mainActivity.resources.getIdentifier(
+                weapon.getAmmoIcon(),
+                "mipmap",
+                mainActivity.packageName
+            )
+        )
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull ListItemHolder holder, int position) {
-        Weapon weapon = weaponList.get(position);
-        holder.textViewName.setText(weapon.getName());
-        holder.icon.setImageResource(mainActivity.getResources().getIdentifier(weapon.getIcon(), "mipmap", mainActivity.getPackageName()));
-        holder.element.setImageResource(mainActivity.getResources().getIdentifier(weapon.getElement_icon(), "mipmap", mainActivity.getPackageName()));
-        holder.ammo.setImageResource(mainActivity.getResources().getIdentifier(weapon.getAmmo_icon(), "mipmap", mainActivity.getPackageName()));
+    override fun getItemCount(): Int {
+        return weaponList.size
     }
 
-    @Override
-    public int getItemCount() {
-        return weaponList.size();
-    }
-
-    public class ListItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final TextView textViewName;
-        private final ImageView icon;
-        private final ImageView element;
-        private final ImageView ammo;
-        public ListItemHolder (View view) {
-            super(view);
-            element = view.findViewById(R.id.element);
-            ammo = view.findViewById(R.id.ammo);
-            icon = view.findViewById(R.id.icon);
-            textViewName = view.findViewById(R.id.textViewName);
-            view.setClickable(true);
-            view.setOnClickListener(this);
+    inner class ListItemHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+        val textViewName: TextView = view.findViewById(R.id.textViewName)
+        val icon: ImageView = view.findViewById(R.id.icon)
+        val element: ImageView = view.findViewById(R.id.element)
+        val ammo: ImageView = view.findViewById(R.id.ammo)
+        override fun onClick(view: View) {
+            mainActivity.showWeapon(adapterPosition)
         }
 
-        public void onClick (View view) {
-
-            mainActivity.showWeapon(getAdapterPosition());
+        init {
+            view.isClickable = true
+            view.setOnClickListener(this)
         }
-
     }
 }
