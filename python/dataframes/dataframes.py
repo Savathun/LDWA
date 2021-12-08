@@ -1,5 +1,5 @@
 import json
-import python.lists_sets_dicts as data
+import lists_sets_dicts as data
 
 import pandas
 import requests

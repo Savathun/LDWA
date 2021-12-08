@@ -1,10 +1,10 @@
 import os
 import sys
 
-import python.database as database
-import python.dataframes.dataframes as dataframes
-import python.lists_sets_dicts as data
-import python.manifest.manifest as manifest
+import database
+import dataframes.dataframes as dataframes
+import lists_sets_dicts as data
+import manifest.manifest as manifest
 
 
 def main():
@@ -14,6 +14,7 @@ def main():
     if update_needed:
         open('manifest/manifest_version.txt', "r+").write(location.split('/')[-1][18:-8])
         manifest.retrieve_manifest(location)
+    update_needed = True
     if not os.path.exists('manifest/manifest.sqlite') or update_needed:
         manifest.extract_manifest()
     db = database.Database('manifest/manifest.sqlite')

@@ -6,7 +6,7 @@ import time
 import urllib.error
 import urllib.request
 import os
-import python.lists_sets_dicts as data
+import lists_sets_dicts as data
 
 
 class Database:

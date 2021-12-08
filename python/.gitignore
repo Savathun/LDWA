@@ -2,3 +2,5 @@
 /.idea/workspace.xml
 /api_key.txt
 /manifest/manifest.sqlite
+/__pycache__
+**/__pycache__
