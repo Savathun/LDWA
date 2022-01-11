@@ -32,18 +32,9 @@ LDWA is essentially an Android application that functions as a database browser,
  This stands in contrast to the current solutions available. All the ones I know of are web-based, and make API calls to generate all the data they show you. For the most part this is fine, but it is a little slow, and requires you to have a good internet connection as well as making you load a new webpage everytime you want to view a new weapon. 
  LDWA uses DialogFragments (essentially, pop up windows in android apps) to show the full view of a weapon, which makes it very easy to click away or press the back button to close the fragment clickly and view another weapon, without changing the place you were looking in the main list. 
  
- Current solutions being web based means you have to rely on chrome instead of a dedicated app, which has some small advantages in terms of layout and other features. 
- 
  ## Isn't [D2Gunsmith](https://D2Gunsmith.com) a far superior product?
  
- In general, I absolutely agree. I love their product. I think the UI is great, all the extra info they have on perks and such is great, all the details and such is great. My product lacks quite a few features that that product has However, they suffer from all of the shortfalls mentioned in the previous section, namely:
- - It is a web application, so no dedicated app, and also requires an internet connection
- - nothing is stored offline, so an API call has to be made every time you load the app which slows it down
- - If you want to view a weapon while on a mobile device, you have to load a new webpage for every weapon, and cannot see the list while viewing the weapon to easily switch between weapons. Going back to the list resets you to the top of the list. 
- - You cannot save weapon rolls within the application itself. This is minor, as they allow you to generate a DIM wishlist item, which is arguably more useful, but has a slightly different use case. 
- - No list of perk synergy is available for each weapon. 
- 
- These shortfalls are pretty minor however, and my application is obviously tailored towards a specific use case which I do not think most folks would care about. However, I will be improving my product over time, so perhaps it would eventually become something a little less niche. 
+Absolutely. There are some minor areas in which make this app have a niche that D2Gunsmith doesnt fill but by and large, D2Gunsmith is a much more fully featured product. I didnt make this app to be the best weapon viewer for destiny however, and I do not believe this really competes with D2Gunsmith at all.
  
  ## Why did you make it?
  
